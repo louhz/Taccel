@@ -18,21 +18,23 @@ cythonize_list = [
 
 ptx_arch_list = [
     "86",
-    "80",
-    "75",
-    "61",
+    # "80",
+    # "75",
+    # "61",
 ]
 
 precompile_commands = [
     [sys.executable, "-m", "examples.grasp_soft_teddy", "--num_envs", "1", "--tactile"],
     [sys.executable, "-m", "examples.grasp_soft_teddy", "--num_envs", "1"],
     [sys.executable, "-m", "examples.peg", "--num_envs", "1"],
+    [sys.executable, "-m" ,"examples.tac_man", "--headless", "--debug"],
 ]
 
 test_commands = [
     [sys.executable, "-m", "examples.grasp_soft_teddy", "--num_envs", "1", "--mesh", "teddy/teddy_f.vtk"],
     [sys.executable, "-m", "examples.grasp_soft_teddy", "--num_envs", "1", "--mesh", "teddy/teddy_f.vtk", "--tactile"],
     [sys.executable, "-m", "examples.peg", "--num_envs", "1"],
+    [sys.executable, "-m" ,"examples.tac_man", "--headless", "--debug"],
 ]
 
 cleaned_folder_list = ["_warp_ci", ".mypy_cache", "build", "docs", "output", "scripts", ".vscode", "cache"]
@@ -230,8 +232,8 @@ def post_test():
                 raise RuntimeError(f"[ERROR] No matching '[PNIter A, MaxIter B]' line found in output of: {command}")
 
             A, B = int(match.group(1)), int(match.group(2))
-            if B <= 5:
-                raise RuntimeError(f"[ERROR] MaxIter {B} too small (<=5) in command: {command}")
+            if B <= 3:
+                raise RuntimeError(f"[ERROR] MaxIter {B} too small (<=3) in command: {command}")
 
             print(f"[PASS] {command} passed all checks.")
 

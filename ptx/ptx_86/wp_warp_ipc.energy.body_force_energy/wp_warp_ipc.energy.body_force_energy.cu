@@ -313,1237 +313,6 @@ static CUDA_CALLABLE void adj_cat_4_vec3d_0(
 
 
 
-extern "C" __global__ void compute_body_force_energy_val_affine_cuda_kernel_forward(
-    wp::launch_bounds_t dim,
-    wp::array_t<wp::float64> var_energy,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_y,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_hat_y,
-    wp::array_t<wp::mat_t<4,4,wp::float64>> var_mass_matrix,
-    wp::vec_t<3,wp::float64> var_gravity,
-    wp::array_t<wp::vec_t<3,wp::float64>> var_affine_ext_force,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_affine_ext_y_force,
-    wp::float64 var_scale,
-    wp::array_t<bool> var_affine_has_constraint)
-{
-    for (size_t _idx = static_cast<size_t>(blockDim.x) * static_cast<size_t>(blockIdx.x) + static_cast<size_t>(threadIdx.x);
-         _idx < dim.size;
-         _idx += static_cast<size_t>(blockDim.x) * static_cast<size_t>(gridDim.x))
-    {
-        // reset shared memory allocator
-        wp::tile_alloc_shared(0, true);
-
-        //---------
-        // primal vars
-        wp::int32 var_0;
-        bool* var_1;
-        bool var_2;
-        bool var_3;
-        const wp::int32 var_4 = 3;
-        const wp::int32 var_5 = 1;
-        wp::int32 var_6;
-        wp::int32 var_7;
-        wp::mat_t<4,4,wp::float64>* var_8;
-        wp::mat_t<4,4,wp::float64> var_9;
-        wp::mat_t<4,4,wp::float64> var_10;
-        wp::vec_t<3,wp::float64>* var_11;
-        wp::vec_t<3,wp::float64> var_12;
-        wp::vec_t<3,wp::float64> var_13;
-        wp::range_t var_14;
-        wp::int32 var_15;
-        const wp::int32 var_16 = 1;
-        wp::int32 var_17;
-        wp::range_t var_18;
-        wp::int32 var_19;
-        wp::int32 var_20;
-        wp::float64 var_21;
-        wp::int32 var_22;
-        wp::float64 var_23;
-        wp::float64 var_24;
-        wp::float64 var_25;
-        wp::vec_t<12,wp::float64>* var_26;
-        wp::float64 var_27;
-        wp::vec_t<12,wp::float64> var_28;
-        wp::float64 var_29;
-        wp::int32 var_30;
-        wp::float64 var_31;
-        wp::float64 var_32;
-        wp::float64 var_33;
-        wp::float64 var_34;
-        wp::vec_t<12,wp::float64>* var_35;
-        wp::vec_t<12,wp::float64> var_36;
-        wp::vec_t<12,wp::float64> var_37;
-        wp::vec_t<12,wp::float64>* var_38;
-        wp::vec_t<12,wp::float64> var_39;
-        wp::vec_t<12,wp::float64> var_40;
-        wp::vec_t<12,wp::float64>* var_41;
-        wp::vec_t<12,wp::float64> var_42;
-        wp::vec_t<12,wp::float64> var_43;
-        const wp::int32 var_44 = 9;
-        wp::float64 var_45;
-        const wp::int32 var_46 = 10;
-        wp::float64 var_47;
-        const wp::int32 var_48 = 11;
-        wp::float64 var_49;
-        wp::vec_t<3,wp::float64> var_50;
-        const wp::int32 var_51 = 0;
-        wp::float64 var_52;
-        const wp::int32 var_53 = 1;
-        wp::float64 var_54;
-        const wp::int32 var_55 = 2;
-        wp::float64 var_56;
-        wp::vec_t<3,wp::float64> var_57;
-        const wp::int32 var_58 = 3;
-        wp::float64 var_59;
-        const wp::int32 var_60 = 4;
-        wp::float64 var_61;
-        const wp::int32 var_62 = 5;
-        wp::float64 var_63;
-        wp::vec_t<3,wp::float64> var_64;
-        const wp::int32 var_65 = 6;
-        wp::float64 var_66;
-        const wp::int32 var_67 = 7;
-        wp::float64 var_68;
-        const wp::int32 var_69 = 8;
-        wp::float64 var_70;
-        wp::vec_t<3,wp::float64> var_71;
-        wp::vec_t<3,wp::float64> var_72;
-        wp::vec_t<3,wp::float64> var_73;
-        wp::vec_t<3,wp::float64> var_74;
-        wp::mat_t<3,3,wp::float64> var_75;
-        const wp::int32 var_76 = 0;
-        wp::float64 var_77;
-        const wp::int32 var_78 = 1;
-        wp::float64 var_79;
-        const wp::int32 var_80 = 2;
-        wp::float64 var_81;
-        wp::vec_t<3,wp::float64> var_82;
-        wp::vec_t<3,wp::float64> var_83;
-        const wp::int32 var_84 = 3;
-        wp::float64 var_85;
-        const wp::int32 var_86 = 4;
-        wp::float64 var_87;
-        const wp::int32 var_88 = 5;
-        wp::float64 var_89;
-        wp::vec_t<3,wp::float64> var_90;
-        wp::vec_t<3,wp::float64> var_91;
-        const wp::int32 var_92 = 6;
-        wp::float64 var_93;
-        const wp::int32 var_94 = 7;
-        wp::float64 var_95;
-        const wp::int32 var_96 = 8;
-        wp::float64 var_97;
-        wp::vec_t<3,wp::float64> var_98;
-        wp::vec_t<3,wp::float64> var_99;
-        const wp::int32 var_100 = 9;
-        wp::float64 var_101;
-        const wp::int32 var_102 = 10;
-        wp::float64 var_103;
-        const wp::int32 var_104 = 11;
-        wp::float64 var_105;
-        wp::vec_t<3,wp::float64> var_106;
-        wp::vec_t<3,wp::float64> var_107;
-        wp::vec_t<12,wp::float64> var_108;
-        const wp::int32 var_109 = 0;
-        wp::float64 var_110;
-        wp::float64 var_111;
-        wp::float64 var_112;
-        wp::float64 var_113;
-        wp::float64 var_114;
-        wp::float64 var_115;
-        const wp::int32 var_116 = 1;
-        wp::float64 var_117;
-        wp::float64 var_118;
-        wp::float64 var_119;
-        wp::float64 var_120;
-        wp::float64 var_121;
-        wp::float64 var_122;
-        const wp::int32 var_123 = 2;
-        wp::float64 var_124;
-        wp::float64 var_125;
-        wp::float64 var_126;
-        wp::float64 var_127;
-        wp::float64 var_128;
-        wp::float64 var_129;
-        const wp::int32 var_130 = 3;
-        wp::float64 var_131;
-        wp::float64 var_132;
-        wp::float64 var_133;
-        wp::float64 var_134;
-        wp::float64 var_135;
-        wp::float64 var_136;
-        const wp::int32 var_137 = 4;
-        wp::float64 var_138;
-        wp::float64 var_139;
-        wp::float64 var_140;
-        wp::float64 var_141;
-        wp::float64 var_142;
-        wp::float64 var_143;
-        const wp::int32 var_144 = 5;
-        wp::float64 var_145;
-        wp::float64 var_146;
-        wp::float64 var_147;
-        wp::float64 var_148;
-        wp::float64 var_149;
-        wp::float64 var_150;
-        const wp::int32 var_151 = 6;
-        wp::float64 var_152;
-        wp::float64 var_153;
-        wp::float64 var_154;
-        wp::float64 var_155;
-        wp::float64 var_156;
-        wp::float64 var_157;
-        const wp::int32 var_158 = 7;
-        wp::float64 var_159;
-        wp::float64 var_160;
-        wp::float64 var_161;
-        wp::float64 var_162;
-        wp::float64 var_163;
-        wp::float64 var_164;
-        const wp::int32 var_165 = 8;
-        wp::float64 var_166;
-        wp::float64 var_167;
-        wp::float64 var_168;
-        wp::float64 var_169;
-        wp::float64 var_170;
-        wp::float64 var_171;
-        const wp::int32 var_172 = 9;
-        wp::float64 var_173;
-        wp::float64 var_174;
-        wp::float64 var_175;
-        wp::float64 var_176;
-        wp::float64 var_177;
-        wp::float64 var_178;
-        const wp::int32 var_179 = 10;
-        wp::float64 var_180;
-        wp::float64 var_181;
-        wp::float64 var_182;
-        wp::float64 var_183;
-        wp::float64 var_184;
-        wp::float64 var_185;
-        const wp::int32 var_186 = 11;
-        wp::float64 var_187;
-        wp::float64 var_188;
-        wp::float64 var_189;
-        wp::float64 var_190;
-        wp::float64 var_191;
-        wp::float64 var_192;
-        //---------
-        // forward
-        // def compute_body_force_energy_val_affine(                                              <L 16>
-        // tid = wp.tid()                                                                         <L 27>
-        var_0 = builtin_tid1d();
-        // if affine_has_constraint[tid]:                                                         <L 28>
-        var_1 = wp::address(var_affine_has_constraint, var_0);
-        var_2 = wp::load(var_1);
-        if (var_2) {
-            // return                                                                             <L 29>
-            continue;
-        }
-        var_3 = wp::load(var_1);
-        // dim = 3                                                                                <L 30>
-        // n_dof = (dim + 1) * dim                                                                <L 31>
-        var_6 = wp::add(var_4, var_5);
-        var_7 = wp::mul(var_6, var_4);
-        // mass = mass_matrix[tid]                                                                <L 32>
-        var_8 = wp::address(var_mass_matrix, var_0);
-        var_10 = wp::load(var_8);
-        var_9 = wp::copy(var_10);
-        // ext_force = affine_ext_force[tid]                                                      <L 33>
-        var_11 = wp::address(var_affine_ext_force, var_0);
-        var_13 = wp::load(var_11);
-        var_12 = wp::copy(var_13);
-        // for i in range(n_dof):                                                                 <L 34>
-        var_14 = wp::range(var_7);
-        start_for_1:;
-            if (iter_cmp(var_14) == 0) goto end_for_1;
-            var_15 = wp::iter_next(var_14);
-            // for j in range(dim + 1):                                                           <L 35>
-            var_17 = wp::add(var_4, var_16);
-            var_18 = wp::range(var_17);
-            start_for_3:;
-                if (iter_cmp(var_18) == 0) goto end_for_3;
-                var_19 = wp::iter_next(var_18);
-                // energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale       <L 36>
-                var_20 = wp::mod(var_15, var_4);
-                var_21 = wp::extract(var_gravity, var_20);
-                var_22 = wp::mod(var_15, var_4);
-                var_23 = wp::extract(var_12, var_22);
-                var_24 = wp::add(var_21, var_23);
-                var_25 = wp::neg(var_24);
-                var_26 = wp::address(var_y, var_0);
-                var_28 = wp::load(var_26);
-                var_27 = wp::extract(var_28, var_15);
-                var_29 = wp::mul(var_25, var_27);
-                var_30 = wp::div(var_15, var_4);
-                var_31 = wp::extract(var_9, var_30, var_19);
-                var_32 = wp::mul(var_29, var_31);
-                var_33 = wp::mul(var_32, var_scale);
-                var_34 = wp::atomic_add(var_energy, var_0, var_33);
-                goto start_for_3;
-            end_for_3:;
-            goto start_for_1;
-        end_for_1:;
-        // rest_y_force = affine_ext_y_force[tid]                                                 <L 37>
-        var_35 = wp::address(var_affine_ext_y_force, var_0);
-        var_37 = wp::load(var_35);
-        var_36 = wp::copy(var_37);
-        // yi = y[tid]                                                                            <L 38>
-        var_38 = wp::address(var_y, var_0);
-        var_40 = wp::load(var_38);
-        var_39 = wp::copy(var_40);
-        // hat_yi = hat_y[tid]                                                                    <L 39>
-        var_41 = wp::address(var_hat_y, var_0);
-        var_43 = wp::load(var_41);
-        var_42 = wp::copy(var_43);
-        // O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                        <L 40>
-        var_45 = wp::extract(var_42, var_44);
-        var_47 = wp::extract(var_42, var_46);
-        var_49 = wp::extract(var_42, var_48);
-        var_50 = wp::vec_t<3,wp::float64>(var_45, var_47, var_49);
-        // A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                          <L 41>
-        var_52 = wp::extract(var_42, var_51);
-        var_54 = wp::extract(var_42, var_53);
-        var_56 = wp::extract(var_42, var_55);
-        var_57 = wp::vec_t<3,wp::float64>(var_52, var_54, var_56);
-        // B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                          <L 42>
-        var_59 = wp::extract(var_42, var_58);
-        var_61 = wp::extract(var_42, var_60);
-        var_63 = wp::extract(var_42, var_62);
-        var_64 = wp::vec_t<3,wp::float64>(var_59, var_61, var_63);
-        // C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                          <L 43>
-        var_66 = wp::extract(var_42, var_65);
-        var_68 = wp::extract(var_42, var_67);
-        var_70 = wp::extract(var_42, var_69);
-        var_71 = wp::vec_t<3,wp::float64>(var_66, var_68, var_70);
-        // R = col_stack3(A - O, B - O, C - O)                                                    <L 44>
-        var_72 = wp::sub(var_57, var_50);
-        var_73 = wp::sub(var_64, var_50);
-        var_74 = wp::sub(var_71, var_50);
-        var_75 = col_stack3_1(var_72, var_73, var_74);
-        // y_force = cat_4_vec3d(                                                                 <L 45>
-        // R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                       <L 46>
-        var_77 = wp::extract(var_36, var_76);
-        var_79 = wp::extract(var_36, var_78);
-        var_81 = wp::extract(var_36, var_80);
-        var_82 = wp::vec_t<3,wp::float64>(var_77, var_79, var_81);
-        var_83 = wp::mul(var_75, var_82);
-        // R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                       <L 47>
-        var_85 = wp::extract(var_36, var_84);
-        var_87 = wp::extract(var_36, var_86);
-        var_89 = wp::extract(var_36, var_88);
-        var_90 = wp::vec_t<3,wp::float64>(var_85, var_87, var_89);
-        var_91 = wp::mul(var_75, var_90);
-        // R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                       <L 48>
-        var_93 = wp::extract(var_36, var_92);
-        var_95 = wp::extract(var_36, var_94);
-        var_97 = wp::extract(var_36, var_96);
-        var_98 = wp::vec_t<3,wp::float64>(var_93, var_95, var_97);
-        var_99 = wp::mul(var_75, var_98);
-        // R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                     <L 49>
-        var_101 = wp::extract(var_36, var_100);
-        var_103 = wp::extract(var_36, var_102);
-        var_105 = wp::extract(var_36, var_104);
-        var_106 = wp::vec_t<3,wp::float64>(var_101, var_103, var_105);
-        var_107 = wp::mul(var_75, var_106);
-        var_108 = cat_4_vec3d_0(var_83, var_91, var_99, var_107);
-        // for d in range(12):                                                                    <L 51>
-        // energy[tid] += -y_force[d] * yi[d] * scale                                             <L 52>
-        var_110 = wp::extract(var_108, var_109);
-        var_111 = wp::neg(var_110);
-        var_112 = wp::extract(var_39, var_109);
-        var_113 = wp::mul(var_111, var_112);
-        var_114 = wp::mul(var_113, var_scale);
-        var_115 = wp::atomic_add(var_energy, var_0, var_114);
-        var_117 = wp::extract(var_108, var_116);
-        var_118 = wp::neg(var_117);
-        var_119 = wp::extract(var_39, var_116);
-        var_120 = wp::mul(var_118, var_119);
-        var_121 = wp::mul(var_120, var_scale);
-        var_122 = wp::atomic_add(var_energy, var_0, var_121);
-        var_124 = wp::extract(var_108, var_123);
-        var_125 = wp::neg(var_124);
-        var_126 = wp::extract(var_39, var_123);
-        var_127 = wp::mul(var_125, var_126);
-        var_128 = wp::mul(var_127, var_scale);
-        var_129 = wp::atomic_add(var_energy, var_0, var_128);
-        var_131 = wp::extract(var_108, var_130);
-        var_132 = wp::neg(var_131);
-        var_133 = wp::extract(var_39, var_130);
-        var_134 = wp::mul(var_132, var_133);
-        var_135 = wp::mul(var_134, var_scale);
-        var_136 = wp::atomic_add(var_energy, var_0, var_135);
-        var_138 = wp::extract(var_108, var_137);
-        var_139 = wp::neg(var_138);
-        var_140 = wp::extract(var_39, var_137);
-        var_141 = wp::mul(var_139, var_140);
-        var_142 = wp::mul(var_141, var_scale);
-        var_143 = wp::atomic_add(var_energy, var_0, var_142);
-        var_145 = wp::extract(var_108, var_144);
-        var_146 = wp::neg(var_145);
-        var_147 = wp::extract(var_39, var_144);
-        var_148 = wp::mul(var_146, var_147);
-        var_149 = wp::mul(var_148, var_scale);
-        var_150 = wp::atomic_add(var_energy, var_0, var_149);
-        var_152 = wp::extract(var_108, var_151);
-        var_153 = wp::neg(var_152);
-        var_154 = wp::extract(var_39, var_151);
-        var_155 = wp::mul(var_153, var_154);
-        var_156 = wp::mul(var_155, var_scale);
-        var_157 = wp::atomic_add(var_energy, var_0, var_156);
-        var_159 = wp::extract(var_108, var_158);
-        var_160 = wp::neg(var_159);
-        var_161 = wp::extract(var_39, var_158);
-        var_162 = wp::mul(var_160, var_161);
-        var_163 = wp::mul(var_162, var_scale);
-        var_164 = wp::atomic_add(var_energy, var_0, var_163);
-        var_166 = wp::extract(var_108, var_165);
-        var_167 = wp::neg(var_166);
-        var_168 = wp::extract(var_39, var_165);
-        var_169 = wp::mul(var_167, var_168);
-        var_170 = wp::mul(var_169, var_scale);
-        var_171 = wp::atomic_add(var_energy, var_0, var_170);
-        var_173 = wp::extract(var_108, var_172);
-        var_174 = wp::neg(var_173);
-        var_175 = wp::extract(var_39, var_172);
-        var_176 = wp::mul(var_174, var_175);
-        var_177 = wp::mul(var_176, var_scale);
-        var_178 = wp::atomic_add(var_energy, var_0, var_177);
-        var_180 = wp::extract(var_108, var_179);
-        var_181 = wp::neg(var_180);
-        var_182 = wp::extract(var_39, var_179);
-        var_183 = wp::mul(var_181, var_182);
-        var_184 = wp::mul(var_183, var_scale);
-        var_185 = wp::atomic_add(var_energy, var_0, var_184);
-        var_187 = wp::extract(var_108, var_186);
-        var_188 = wp::neg(var_187);
-        var_189 = wp::extract(var_39, var_186);
-        var_190 = wp::mul(var_188, var_189);
-        var_191 = wp::mul(var_190, var_scale);
-        var_192 = wp::atomic_add(var_energy, var_0, var_191);
-    }
-}
-
-
-
-extern "C" __global__ void compute_body_force_energy_val_affine_cuda_kernel_backward(
-    wp::launch_bounds_t dim,
-    wp::array_t<wp::float64> var_energy,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_y,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_hat_y,
-    wp::array_t<wp::mat_t<4,4,wp::float64>> var_mass_matrix,
-    wp::vec_t<3,wp::float64> var_gravity,
-    wp::array_t<wp::vec_t<3,wp::float64>> var_affine_ext_force,
-    wp::array_t<wp::vec_t<12,wp::float64>> var_affine_ext_y_force,
-    wp::float64 var_scale,
-    wp::array_t<bool> var_affine_has_constraint,
-    wp::array_t<wp::float64> adj_energy,
-    wp::array_t<wp::vec_t<12,wp::float64>> adj_y,
-    wp::array_t<wp::vec_t<12,wp::float64>> adj_hat_y,
-    wp::array_t<wp::mat_t<4,4,wp::float64>> adj_mass_matrix,
-    wp::vec_t<3,wp::float64> adj_gravity,
-    wp::array_t<wp::vec_t<3,wp::float64>> adj_affine_ext_force,
-    wp::array_t<wp::vec_t<12,wp::float64>> adj_affine_ext_y_force,
-    wp::float64 adj_scale,
-    wp::array_t<bool> adj_affine_has_constraint)
-{
-    for (size_t _idx = static_cast<size_t>(blockDim.x) * static_cast<size_t>(blockIdx.x) + static_cast<size_t>(threadIdx.x);
-         _idx < dim.size;
-         _idx += static_cast<size_t>(blockDim.x) * static_cast<size_t>(gridDim.x))
-    {
-        // reset shared memory allocator
-        wp::tile_alloc_shared(0, true);
-
-        //---------
-        // primal vars
-        wp::int32 var_0;
-        bool* var_1;
-        bool var_2;
-        bool var_3;
-        const wp::int32 var_4 = 3;
-        const wp::int32 var_5 = 1;
-        wp::int32 var_6;
-        wp::int32 var_7;
-        wp::mat_t<4,4,wp::float64>* var_8;
-        wp::mat_t<4,4,wp::float64> var_9;
-        wp::mat_t<4,4,wp::float64> var_10;
-        wp::vec_t<3,wp::float64>* var_11;
-        wp::vec_t<3,wp::float64> var_12;
-        wp::vec_t<3,wp::float64> var_13;
-        wp::range_t var_14;
-        wp::int32 var_15;
-        const wp::int32 var_16 = 1;
-        wp::int32 var_17;
-        wp::range_t var_18;
-        wp::int32 var_19;
-        wp::int32 var_20;
-        wp::float64 var_21;
-        wp::int32 var_22;
-        wp::float64 var_23;
-        wp::float64 var_24;
-        wp::float64 var_25;
-        wp::vec_t<12,wp::float64>* var_26;
-        wp::float64 var_27;
-        wp::vec_t<12,wp::float64> var_28;
-        wp::float64 var_29;
-        wp::int32 var_30;
-        wp::float64 var_31;
-        wp::float64 var_32;
-        wp::float64 var_33;
-        wp::float64 var_34;
-        wp::vec_t<12,wp::float64>* var_35;
-        wp::vec_t<12,wp::float64> var_36;
-        wp::vec_t<12,wp::float64> var_37;
-        wp::vec_t<12,wp::float64>* var_38;
-        wp::vec_t<12,wp::float64> var_39;
-        wp::vec_t<12,wp::float64> var_40;
-        wp::vec_t<12,wp::float64>* var_41;
-        wp::vec_t<12,wp::float64> var_42;
-        wp::vec_t<12,wp::float64> var_43;
-        const wp::int32 var_44 = 9;
-        wp::float64 var_45;
-        const wp::int32 var_46 = 10;
-        wp::float64 var_47;
-        const wp::int32 var_48 = 11;
-        wp::float64 var_49;
-        wp::vec_t<3,wp::float64> var_50;
-        const wp::int32 var_51 = 0;
-        wp::float64 var_52;
-        const wp::int32 var_53 = 1;
-        wp::float64 var_54;
-        const wp::int32 var_55 = 2;
-        wp::float64 var_56;
-        wp::vec_t<3,wp::float64> var_57;
-        const wp::int32 var_58 = 3;
-        wp::float64 var_59;
-        const wp::int32 var_60 = 4;
-        wp::float64 var_61;
-        const wp::int32 var_62 = 5;
-        wp::float64 var_63;
-        wp::vec_t<3,wp::float64> var_64;
-        const wp::int32 var_65 = 6;
-        wp::float64 var_66;
-        const wp::int32 var_67 = 7;
-        wp::float64 var_68;
-        const wp::int32 var_69 = 8;
-        wp::float64 var_70;
-        wp::vec_t<3,wp::float64> var_71;
-        wp::vec_t<3,wp::float64> var_72;
-        wp::vec_t<3,wp::float64> var_73;
-        wp::vec_t<3,wp::float64> var_74;
-        wp::mat_t<3,3,wp::float64> var_75;
-        const wp::int32 var_76 = 0;
-        wp::float64 var_77;
-        const wp::int32 var_78 = 1;
-        wp::float64 var_79;
-        const wp::int32 var_80 = 2;
-        wp::float64 var_81;
-        wp::vec_t<3,wp::float64> var_82;
-        wp::vec_t<3,wp::float64> var_83;
-        const wp::int32 var_84 = 3;
-        wp::float64 var_85;
-        const wp::int32 var_86 = 4;
-        wp::float64 var_87;
-        const wp::int32 var_88 = 5;
-        wp::float64 var_89;
-        wp::vec_t<3,wp::float64> var_90;
-        wp::vec_t<3,wp::float64> var_91;
-        const wp::int32 var_92 = 6;
-        wp::float64 var_93;
-        const wp::int32 var_94 = 7;
-        wp::float64 var_95;
-        const wp::int32 var_96 = 8;
-        wp::float64 var_97;
-        wp::vec_t<3,wp::float64> var_98;
-        wp::vec_t<3,wp::float64> var_99;
-        const wp::int32 var_100 = 9;
-        wp::float64 var_101;
-        const wp::int32 var_102 = 10;
-        wp::float64 var_103;
-        const wp::int32 var_104 = 11;
-        wp::float64 var_105;
-        wp::vec_t<3,wp::float64> var_106;
-        wp::vec_t<3,wp::float64> var_107;
-        wp::vec_t<12,wp::float64> var_108;
-        const wp::int32 var_109 = 0;
-        wp::float64 var_110;
-        wp::float64 var_111;
-        wp::float64 var_112;
-        wp::float64 var_113;
-        wp::float64 var_114;
-        wp::float64 var_115;
-        const wp::int32 var_116 = 1;
-        wp::float64 var_117;
-        wp::float64 var_118;
-        wp::float64 var_119;
-        wp::float64 var_120;
-        wp::float64 var_121;
-        wp::float64 var_122;
-        const wp::int32 var_123 = 2;
-        wp::float64 var_124;
-        wp::float64 var_125;
-        wp::float64 var_126;
-        wp::float64 var_127;
-        wp::float64 var_128;
-        wp::float64 var_129;
-        const wp::int32 var_130 = 3;
-        wp::float64 var_131;
-        wp::float64 var_132;
-        wp::float64 var_133;
-        wp::float64 var_134;
-        wp::float64 var_135;
-        wp::float64 var_136;
-        const wp::int32 var_137 = 4;
-        wp::float64 var_138;
-        wp::float64 var_139;
-        wp::float64 var_140;
-        wp::float64 var_141;
-        wp::float64 var_142;
-        wp::float64 var_143;
-        const wp::int32 var_144 = 5;
-        wp::float64 var_145;
-        wp::float64 var_146;
-        wp::float64 var_147;
-        wp::float64 var_148;
-        wp::float64 var_149;
-        wp::float64 var_150;
-        const wp::int32 var_151 = 6;
-        wp::float64 var_152;
-        wp::float64 var_153;
-        wp::float64 var_154;
-        wp::float64 var_155;
-        wp::float64 var_156;
-        wp::float64 var_157;
-        const wp::int32 var_158 = 7;
-        wp::float64 var_159;
-        wp::float64 var_160;
-        wp::float64 var_161;
-        wp::float64 var_162;
-        wp::float64 var_163;
-        wp::float64 var_164;
-        const wp::int32 var_165 = 8;
-        wp::float64 var_166;
-        wp::float64 var_167;
-        wp::float64 var_168;
-        wp::float64 var_169;
-        wp::float64 var_170;
-        wp::float64 var_171;
-        const wp::int32 var_172 = 9;
-        wp::float64 var_173;
-        wp::float64 var_174;
-        wp::float64 var_175;
-        wp::float64 var_176;
-        wp::float64 var_177;
-        wp::float64 var_178;
-        const wp::int32 var_179 = 10;
-        wp::float64 var_180;
-        wp::float64 var_181;
-        wp::float64 var_182;
-        wp::float64 var_183;
-        wp::float64 var_184;
-        wp::float64 var_185;
-        const wp::int32 var_186 = 11;
-        wp::float64 var_187;
-        wp::float64 var_188;
-        wp::float64 var_189;
-        wp::float64 var_190;
-        wp::float64 var_191;
-        wp::float64 var_192;
-        //---------
-        // dual vars
-        wp::int32 adj_0 = {};
-        bool adj_1 = {};
-        bool adj_2 = {};
-        bool adj_3 = {};
-        wp::int32 adj_4 = {};
-        wp::int32 adj_5 = {};
-        wp::int32 adj_6 = {};
-        wp::int32 adj_7 = {};
-        wp::mat_t<4,4,wp::float64> adj_8 = {};
-        wp::mat_t<4,4,wp::float64> adj_9 = {};
-        wp::mat_t<4,4,wp::float64> adj_10 = {};
-        wp::vec_t<3,wp::float64> adj_11 = {};
-        wp::vec_t<3,wp::float64> adj_12 = {};
-        wp::vec_t<3,wp::float64> adj_13 = {};
-        wp::range_t adj_14 = {};
-        wp::int32 adj_15 = {};
-        wp::int32 adj_16 = {};
-        wp::int32 adj_17 = {};
-        wp::range_t adj_18 = {};
-        wp::int32 adj_19 = {};
-        wp::int32 adj_20 = {};
-        wp::float64 adj_21 = {};
-        wp::int32 adj_22 = {};
-        wp::float64 adj_23 = {};
-        wp::float64 adj_24 = {};
-        wp::float64 adj_25 = {};
-        wp::vec_t<12,wp::float64> adj_26 = {};
-        wp::float64 adj_27 = {};
-        wp::vec_t<12,wp::float64> adj_28 = {};
-        wp::float64 adj_29 = {};
-        wp::int32 adj_30 = {};
-        wp::float64 adj_31 = {};
-        wp::float64 adj_32 = {};
-        wp::float64 adj_33 = {};
-        wp::float64 adj_34 = {};
-        wp::vec_t<12,wp::float64> adj_35 = {};
-        wp::vec_t<12,wp::float64> adj_36 = {};
-        wp::vec_t<12,wp::float64> adj_37 = {};
-        wp::vec_t<12,wp::float64> adj_38 = {};
-        wp::vec_t<12,wp::float64> adj_39 = {};
-        wp::vec_t<12,wp::float64> adj_40 = {};
-        wp::vec_t<12,wp::float64> adj_41 = {};
-        wp::vec_t<12,wp::float64> adj_42 = {};
-        wp::vec_t<12,wp::float64> adj_43 = {};
-        wp::int32 adj_44 = {};
-        wp::float64 adj_45 = {};
-        wp::int32 adj_46 = {};
-        wp::float64 adj_47 = {};
-        wp::int32 adj_48 = {};
-        wp::float64 adj_49 = {};
-        wp::vec_t<3,wp::float64> adj_50 = {};
-        wp::int32 adj_51 = {};
-        wp::float64 adj_52 = {};
-        wp::int32 adj_53 = {};
-        wp::float64 adj_54 = {};
-        wp::int32 adj_55 = {};
-        wp::float64 adj_56 = {};
-        wp::vec_t<3,wp::float64> adj_57 = {};
-        wp::int32 adj_58 = {};
-        wp::float64 adj_59 = {};
-        wp::int32 adj_60 = {};
-        wp::float64 adj_61 = {};
-        wp::int32 adj_62 = {};
-        wp::float64 adj_63 = {};
-        wp::vec_t<3,wp::float64> adj_64 = {};
-        wp::int32 adj_65 = {};
-        wp::float64 adj_66 = {};
-        wp::int32 adj_67 = {};
-        wp::float64 adj_68 = {};
-        wp::int32 adj_69 = {};
-        wp::float64 adj_70 = {};
-        wp::vec_t<3,wp::float64> adj_71 = {};
-        wp::vec_t<3,wp::float64> adj_72 = {};
-        wp::vec_t<3,wp::float64> adj_73 = {};
-        wp::vec_t<3,wp::float64> adj_74 = {};
-        wp::mat_t<3,3,wp::float64> adj_75 = {};
-        wp::int32 adj_76 = {};
-        wp::float64 adj_77 = {};
-        wp::int32 adj_78 = {};
-        wp::float64 adj_79 = {};
-        wp::int32 adj_80 = {};
-        wp::float64 adj_81 = {};
-        wp::vec_t<3,wp::float64> adj_82 = {};
-        wp::vec_t<3,wp::float64> adj_83 = {};
-        wp::int32 adj_84 = {};
-        wp::float64 adj_85 = {};
-        wp::int32 adj_86 = {};
-        wp::float64 adj_87 = {};
-        wp::int32 adj_88 = {};
-        wp::float64 adj_89 = {};
-        wp::vec_t<3,wp::float64> adj_90 = {};
-        wp::vec_t<3,wp::float64> adj_91 = {};
-        wp::int32 adj_92 = {};
-        wp::float64 adj_93 = {};
-        wp::int32 adj_94 = {};
-        wp::float64 adj_95 = {};
-        wp::int32 adj_96 = {};
-        wp::float64 adj_97 = {};
-        wp::vec_t<3,wp::float64> adj_98 = {};
-        wp::vec_t<3,wp::float64> adj_99 = {};
-        wp::int32 adj_100 = {};
-        wp::float64 adj_101 = {};
-        wp::int32 adj_102 = {};
-        wp::float64 adj_103 = {};
-        wp::int32 adj_104 = {};
-        wp::float64 adj_105 = {};
-        wp::vec_t<3,wp::float64> adj_106 = {};
-        wp::vec_t<3,wp::float64> adj_107 = {};
-        wp::vec_t<12,wp::float64> adj_108 = {};
-        wp::int32 adj_109 = {};
-        wp::float64 adj_110 = {};
-        wp::float64 adj_111 = {};
-        wp::float64 adj_112 = {};
-        wp::float64 adj_113 = {};
-        wp::float64 adj_114 = {};
-        wp::float64 adj_115 = {};
-        wp::int32 adj_116 = {};
-        wp::float64 adj_117 = {};
-        wp::float64 adj_118 = {};
-        wp::float64 adj_119 = {};
-        wp::float64 adj_120 = {};
-        wp::float64 adj_121 = {};
-        wp::float64 adj_122 = {};
-        wp::int32 adj_123 = {};
-        wp::float64 adj_124 = {};
-        wp::float64 adj_125 = {};
-        wp::float64 adj_126 = {};
-        wp::float64 adj_127 = {};
-        wp::float64 adj_128 = {};
-        wp::float64 adj_129 = {};
-        wp::int32 adj_130 = {};
-        wp::float64 adj_131 = {};
-        wp::float64 adj_132 = {};
-        wp::float64 adj_133 = {};
-        wp::float64 adj_134 = {};
-        wp::float64 adj_135 = {};
-        wp::float64 adj_136 = {};
-        wp::int32 adj_137 = {};
-        wp::float64 adj_138 = {};
-        wp::float64 adj_139 = {};
-        wp::float64 adj_140 = {};
-        wp::float64 adj_141 = {};
-        wp::float64 adj_142 = {};
-        wp::float64 adj_143 = {};
-        wp::int32 adj_144 = {};
-        wp::float64 adj_145 = {};
-        wp::float64 adj_146 = {};
-        wp::float64 adj_147 = {};
-        wp::float64 adj_148 = {};
-        wp::float64 adj_149 = {};
-        wp::float64 adj_150 = {};
-        wp::int32 adj_151 = {};
-        wp::float64 adj_152 = {};
-        wp::float64 adj_153 = {};
-        wp::float64 adj_154 = {};
-        wp::float64 adj_155 = {};
-        wp::float64 adj_156 = {};
-        wp::float64 adj_157 = {};
-        wp::int32 adj_158 = {};
-        wp::float64 adj_159 = {};
-        wp::float64 adj_160 = {};
-        wp::float64 adj_161 = {};
-        wp::float64 adj_162 = {};
-        wp::float64 adj_163 = {};
-        wp::float64 adj_164 = {};
-        wp::int32 adj_165 = {};
-        wp::float64 adj_166 = {};
-        wp::float64 adj_167 = {};
-        wp::float64 adj_168 = {};
-        wp::float64 adj_169 = {};
-        wp::float64 adj_170 = {};
-        wp::float64 adj_171 = {};
-        wp::int32 adj_172 = {};
-        wp::float64 adj_173 = {};
-        wp::float64 adj_174 = {};
-        wp::float64 adj_175 = {};
-        wp::float64 adj_176 = {};
-        wp::float64 adj_177 = {};
-        wp::float64 adj_178 = {};
-        wp::int32 adj_179 = {};
-        wp::float64 adj_180 = {};
-        wp::float64 adj_181 = {};
-        wp::float64 adj_182 = {};
-        wp::float64 adj_183 = {};
-        wp::float64 adj_184 = {};
-        wp::float64 adj_185 = {};
-        wp::int32 adj_186 = {};
-        wp::float64 adj_187 = {};
-        wp::float64 adj_188 = {};
-        wp::float64 adj_189 = {};
-        wp::float64 adj_190 = {};
-        wp::float64 adj_191 = {};
-        wp::float64 adj_192 = {};
-        //---------
-        // forward
-        // def compute_body_force_energy_val_affine(                                              <L 16>
-        // tid = wp.tid()                                                                         <L 27>
-        var_0 = builtin_tid1d();
-        // if affine_has_constraint[tid]:                                                         <L 28>
-        var_1 = wp::address(var_affine_has_constraint, var_0);
-        var_2 = wp::load(var_1);
-        if (var_2) {
-            // return                                                                             <L 29>
-            goto label0;
-        }
-        var_3 = wp::load(var_1);
-        // dim = 3                                                                                <L 30>
-        // n_dof = (dim + 1) * dim                                                                <L 31>
-        var_6 = wp::add(var_4, var_5);
-        var_7 = wp::mul(var_6, var_4);
-        // mass = mass_matrix[tid]                                                                <L 32>
-        var_8 = wp::address(var_mass_matrix, var_0);
-        var_10 = wp::load(var_8);
-        var_9 = wp::copy(var_10);
-        // ext_force = affine_ext_force[tid]                                                      <L 33>
-        var_11 = wp::address(var_affine_ext_force, var_0);
-        var_13 = wp::load(var_11);
-        var_12 = wp::copy(var_13);
-        // for i in range(n_dof):                                                                 <L 34>
-        var_14 = wp::range(var_7);
-        // rest_y_force = affine_ext_y_force[tid]                                                 <L 37>
-        var_35 = wp::address(var_affine_ext_y_force, var_0);
-        var_37 = wp::load(var_35);
-        var_36 = wp::copy(var_37);
-        // yi = y[tid]                                                                            <L 38>
-        var_38 = wp::address(var_y, var_0);
-        var_40 = wp::load(var_38);
-        var_39 = wp::copy(var_40);
-        // hat_yi = hat_y[tid]                                                                    <L 39>
-        var_41 = wp::address(var_hat_y, var_0);
-        var_43 = wp::load(var_41);
-        var_42 = wp::copy(var_43);
-        // O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                        <L 40>
-        var_45 = wp::extract(var_42, var_44);
-        var_47 = wp::extract(var_42, var_46);
-        var_49 = wp::extract(var_42, var_48);
-        var_50 = wp::vec_t<3,wp::float64>(var_45, var_47, var_49);
-        // A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                          <L 41>
-        var_52 = wp::extract(var_42, var_51);
-        var_54 = wp::extract(var_42, var_53);
-        var_56 = wp::extract(var_42, var_55);
-        var_57 = wp::vec_t<3,wp::float64>(var_52, var_54, var_56);
-        // B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                          <L 42>
-        var_59 = wp::extract(var_42, var_58);
-        var_61 = wp::extract(var_42, var_60);
-        var_63 = wp::extract(var_42, var_62);
-        var_64 = wp::vec_t<3,wp::float64>(var_59, var_61, var_63);
-        // C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                          <L 43>
-        var_66 = wp::extract(var_42, var_65);
-        var_68 = wp::extract(var_42, var_67);
-        var_70 = wp::extract(var_42, var_69);
-        var_71 = wp::vec_t<3,wp::float64>(var_66, var_68, var_70);
-        // R = col_stack3(A - O, B - O, C - O)                                                    <L 44>
-        var_72 = wp::sub(var_57, var_50);
-        var_73 = wp::sub(var_64, var_50);
-        var_74 = wp::sub(var_71, var_50);
-        var_75 = col_stack3_1(var_72, var_73, var_74);
-        // y_force = cat_4_vec3d(                                                                 <L 45>
-        // R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                       <L 46>
-        var_77 = wp::extract(var_36, var_76);
-        var_79 = wp::extract(var_36, var_78);
-        var_81 = wp::extract(var_36, var_80);
-        var_82 = wp::vec_t<3,wp::float64>(var_77, var_79, var_81);
-        var_83 = wp::mul(var_75, var_82);
-        // R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                       <L 47>
-        var_85 = wp::extract(var_36, var_84);
-        var_87 = wp::extract(var_36, var_86);
-        var_89 = wp::extract(var_36, var_88);
-        var_90 = wp::vec_t<3,wp::float64>(var_85, var_87, var_89);
-        var_91 = wp::mul(var_75, var_90);
-        // R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                       <L 48>
-        var_93 = wp::extract(var_36, var_92);
-        var_95 = wp::extract(var_36, var_94);
-        var_97 = wp::extract(var_36, var_96);
-        var_98 = wp::vec_t<3,wp::float64>(var_93, var_95, var_97);
-        var_99 = wp::mul(var_75, var_98);
-        // R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                     <L 49>
-        var_101 = wp::extract(var_36, var_100);
-        var_103 = wp::extract(var_36, var_102);
-        var_105 = wp::extract(var_36, var_104);
-        var_106 = wp::vec_t<3,wp::float64>(var_101, var_103, var_105);
-        var_107 = wp::mul(var_75, var_106);
-        var_108 = cat_4_vec3d_0(var_83, var_91, var_99, var_107);
-        // for d in range(12):                                                                    <L 51>
-        // energy[tid] += -y_force[d] * yi[d] * scale                                             <L 52>
-        var_110 = wp::extract(var_108, var_109);
-        var_111 = wp::neg(var_110);
-        var_112 = wp::extract(var_39, var_109);
-        var_113 = wp::mul(var_111, var_112);
-        var_114 = wp::mul(var_113, var_scale);
-        // var_115 = wp::atomic_add(var_energy, var_0, var_114);
-        var_117 = wp::extract(var_108, var_116);
-        var_118 = wp::neg(var_117);
-        var_119 = wp::extract(var_39, var_116);
-        var_120 = wp::mul(var_118, var_119);
-        var_121 = wp::mul(var_120, var_scale);
-        // var_122 = wp::atomic_add(var_energy, var_0, var_121);
-        var_124 = wp::extract(var_108, var_123);
-        var_125 = wp::neg(var_124);
-        var_126 = wp::extract(var_39, var_123);
-        var_127 = wp::mul(var_125, var_126);
-        var_128 = wp::mul(var_127, var_scale);
-        // var_129 = wp::atomic_add(var_energy, var_0, var_128);
-        var_131 = wp::extract(var_108, var_130);
-        var_132 = wp::neg(var_131);
-        var_133 = wp::extract(var_39, var_130);
-        var_134 = wp::mul(var_132, var_133);
-        var_135 = wp::mul(var_134, var_scale);
-        // var_136 = wp::atomic_add(var_energy, var_0, var_135);
-        var_138 = wp::extract(var_108, var_137);
-        var_139 = wp::neg(var_138);
-        var_140 = wp::extract(var_39, var_137);
-        var_141 = wp::mul(var_139, var_140);
-        var_142 = wp::mul(var_141, var_scale);
-        // var_143 = wp::atomic_add(var_energy, var_0, var_142);
-        var_145 = wp::extract(var_108, var_144);
-        var_146 = wp::neg(var_145);
-        var_147 = wp::extract(var_39, var_144);
-        var_148 = wp::mul(var_146, var_147);
-        var_149 = wp::mul(var_148, var_scale);
-        // var_150 = wp::atomic_add(var_energy, var_0, var_149);
-        var_152 = wp::extract(var_108, var_151);
-        var_153 = wp::neg(var_152);
-        var_154 = wp::extract(var_39, var_151);
-        var_155 = wp::mul(var_153, var_154);
-        var_156 = wp::mul(var_155, var_scale);
-        // var_157 = wp::atomic_add(var_energy, var_0, var_156);
-        var_159 = wp::extract(var_108, var_158);
-        var_160 = wp::neg(var_159);
-        var_161 = wp::extract(var_39, var_158);
-        var_162 = wp::mul(var_160, var_161);
-        var_163 = wp::mul(var_162, var_scale);
-        // var_164 = wp::atomic_add(var_energy, var_0, var_163);
-        var_166 = wp::extract(var_108, var_165);
-        var_167 = wp::neg(var_166);
-        var_168 = wp::extract(var_39, var_165);
-        var_169 = wp::mul(var_167, var_168);
-        var_170 = wp::mul(var_169, var_scale);
-        // var_171 = wp::atomic_add(var_energy, var_0, var_170);
-        var_173 = wp::extract(var_108, var_172);
-        var_174 = wp::neg(var_173);
-        var_175 = wp::extract(var_39, var_172);
-        var_176 = wp::mul(var_174, var_175);
-        var_177 = wp::mul(var_176, var_scale);
-        // var_178 = wp::atomic_add(var_energy, var_0, var_177);
-        var_180 = wp::extract(var_108, var_179);
-        var_181 = wp::neg(var_180);
-        var_182 = wp::extract(var_39, var_179);
-        var_183 = wp::mul(var_181, var_182);
-        var_184 = wp::mul(var_183, var_scale);
-        // var_185 = wp::atomic_add(var_energy, var_0, var_184);
-        var_187 = wp::extract(var_108, var_186);
-        var_188 = wp::neg(var_187);
-        var_189 = wp::extract(var_39, var_186);
-        var_190 = wp::mul(var_188, var_189);
-        var_191 = wp::mul(var_190, var_scale);
-        // var_192 = wp::atomic_add(var_energy, var_0, var_191);
-        //---------
-        // reverse
-        wp::adj_atomic_add(var_energy, var_0, var_191, adj_energy, adj_0, adj_191, adj_192);
-        wp::adj_mul(var_190, var_scale, adj_190, adj_scale, adj_191);
-        wp::adj_mul(var_188, var_189, adj_188, adj_189, adj_190);
-        wp::adj_extract(var_39, var_186, adj_39, adj_186, adj_189);
-        wp::adj_neg(var_187, adj_187, adj_188);
-        wp::adj_extract(var_108, var_186, adj_108, adj_186, adj_187);
-        wp::adj_atomic_add(var_energy, var_0, var_184, adj_energy, adj_0, adj_184, adj_185);
-        wp::adj_mul(var_183, var_scale, adj_183, adj_scale, adj_184);
-        wp::adj_mul(var_181, var_182, adj_181, adj_182, adj_183);
-        wp::adj_extract(var_39, var_179, adj_39, adj_179, adj_182);
-        wp::adj_neg(var_180, adj_180, adj_181);
-        wp::adj_extract(var_108, var_179, adj_108, adj_179, adj_180);
-        wp::adj_atomic_add(var_energy, var_0, var_177, adj_energy, adj_0, adj_177, adj_178);
-        wp::adj_mul(var_176, var_scale, adj_176, adj_scale, adj_177);
-        wp::adj_mul(var_174, var_175, adj_174, adj_175, adj_176);
-        wp::adj_extract(var_39, var_172, adj_39, adj_172, adj_175);
-        wp::adj_neg(var_173, adj_173, adj_174);
-        wp::adj_extract(var_108, var_172, adj_108, adj_172, adj_173);
-        wp::adj_atomic_add(var_energy, var_0, var_170, adj_energy, adj_0, adj_170, adj_171);
-        wp::adj_mul(var_169, var_scale, adj_169, adj_scale, adj_170);
-        wp::adj_mul(var_167, var_168, adj_167, adj_168, adj_169);
-        wp::adj_extract(var_39, var_165, adj_39, adj_165, adj_168);
-        wp::adj_neg(var_166, adj_166, adj_167);
-        wp::adj_extract(var_108, var_165, adj_108, adj_165, adj_166);
-        wp::adj_atomic_add(var_energy, var_0, var_163, adj_energy, adj_0, adj_163, adj_164);
-        wp::adj_mul(var_162, var_scale, adj_162, adj_scale, adj_163);
-        wp::adj_mul(var_160, var_161, adj_160, adj_161, adj_162);
-        wp::adj_extract(var_39, var_158, adj_39, adj_158, adj_161);
-        wp::adj_neg(var_159, adj_159, adj_160);
-        wp::adj_extract(var_108, var_158, adj_108, adj_158, adj_159);
-        wp::adj_atomic_add(var_energy, var_0, var_156, adj_energy, adj_0, adj_156, adj_157);
-        wp::adj_mul(var_155, var_scale, adj_155, adj_scale, adj_156);
-        wp::adj_mul(var_153, var_154, adj_153, adj_154, adj_155);
-        wp::adj_extract(var_39, var_151, adj_39, adj_151, adj_154);
-        wp::adj_neg(var_152, adj_152, adj_153);
-        wp::adj_extract(var_108, var_151, adj_108, adj_151, adj_152);
-        wp::adj_atomic_add(var_energy, var_0, var_149, adj_energy, adj_0, adj_149, adj_150);
-        wp::adj_mul(var_148, var_scale, adj_148, adj_scale, adj_149);
-        wp::adj_mul(var_146, var_147, adj_146, adj_147, adj_148);
-        wp::adj_extract(var_39, var_144, adj_39, adj_144, adj_147);
-        wp::adj_neg(var_145, adj_145, adj_146);
-        wp::adj_extract(var_108, var_144, adj_108, adj_144, adj_145);
-        wp::adj_atomic_add(var_energy, var_0, var_142, adj_energy, adj_0, adj_142, adj_143);
-        wp::adj_mul(var_141, var_scale, adj_141, adj_scale, adj_142);
-        wp::adj_mul(var_139, var_140, adj_139, adj_140, adj_141);
-        wp::adj_extract(var_39, var_137, adj_39, adj_137, adj_140);
-        wp::adj_neg(var_138, adj_138, adj_139);
-        wp::adj_extract(var_108, var_137, adj_108, adj_137, adj_138);
-        wp::adj_atomic_add(var_energy, var_0, var_135, adj_energy, adj_0, adj_135, adj_136);
-        wp::adj_mul(var_134, var_scale, adj_134, adj_scale, adj_135);
-        wp::adj_mul(var_132, var_133, adj_132, adj_133, adj_134);
-        wp::adj_extract(var_39, var_130, adj_39, adj_130, adj_133);
-        wp::adj_neg(var_131, adj_131, adj_132);
-        wp::adj_extract(var_108, var_130, adj_108, adj_130, adj_131);
-        wp::adj_atomic_add(var_energy, var_0, var_128, adj_energy, adj_0, adj_128, adj_129);
-        wp::adj_mul(var_127, var_scale, adj_127, adj_scale, adj_128);
-        wp::adj_mul(var_125, var_126, adj_125, adj_126, adj_127);
-        wp::adj_extract(var_39, var_123, adj_39, adj_123, adj_126);
-        wp::adj_neg(var_124, adj_124, adj_125);
-        wp::adj_extract(var_108, var_123, adj_108, adj_123, adj_124);
-        wp::adj_atomic_add(var_energy, var_0, var_121, adj_energy, adj_0, adj_121, adj_122);
-        wp::adj_mul(var_120, var_scale, adj_120, adj_scale, adj_121);
-        wp::adj_mul(var_118, var_119, adj_118, adj_119, adj_120);
-        wp::adj_extract(var_39, var_116, adj_39, adj_116, adj_119);
-        wp::adj_neg(var_117, adj_117, adj_118);
-        wp::adj_extract(var_108, var_116, adj_108, adj_116, adj_117);
-        wp::adj_atomic_add(var_energy, var_0, var_114, adj_energy, adj_0, adj_114, adj_115);
-        wp::adj_mul(var_113, var_scale, adj_113, adj_scale, adj_114);
-        wp::adj_mul(var_111, var_112, adj_111, adj_112, adj_113);
-        wp::adj_extract(var_39, var_109, adj_39, adj_109, adj_112);
-        wp::adj_neg(var_110, adj_110, adj_111);
-        wp::adj_extract(var_108, var_109, adj_108, adj_109, adj_110);
-        // adj: energy[tid] += -y_force[d] * yi[d] * scale                                        <L 52>
-        // adj: for d in range(12):                                                               <L 51>
-        adj_cat_4_vec3d_0(var_83, var_91, var_99, var_107, adj_83, adj_91, adj_99, adj_107, adj_108);
-        wp::adj_mul(var_75, var_106, adj_75, adj_106, adj_107);
-        wp::adj_vec_t(var_101, var_103, var_105, adj_101, adj_103, adj_105, adj_106);
-        wp::adj_extract(var_36, var_104, adj_36, adj_104, adj_105);
-        wp::adj_extract(var_36, var_102, adj_36, adj_102, adj_103);
-        wp::adj_extract(var_36, var_100, adj_36, adj_100, adj_101);
-        // adj: R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                <L 49>
-        wp::adj_mul(var_75, var_98, adj_75, adj_98, adj_99);
-        wp::adj_vec_t(var_93, var_95, var_97, adj_93, adj_95, adj_97, adj_98);
-        wp::adj_extract(var_36, var_96, adj_36, adj_96, adj_97);
-        wp::adj_extract(var_36, var_94, adj_36, adj_94, adj_95);
-        wp::adj_extract(var_36, var_92, adj_36, adj_92, adj_93);
-        // adj: R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                  <L 48>
-        wp::adj_mul(var_75, var_90, adj_75, adj_90, adj_91);
-        wp::adj_vec_t(var_85, var_87, var_89, adj_85, adj_87, adj_89, adj_90);
-        wp::adj_extract(var_36, var_88, adj_36, adj_88, adj_89);
-        wp::adj_extract(var_36, var_86, adj_36, adj_86, adj_87);
-        wp::adj_extract(var_36, var_84, adj_36, adj_84, adj_85);
-        // adj: R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                  <L 47>
-        wp::adj_mul(var_75, var_82, adj_75, adj_82, adj_83);
-        wp::adj_vec_t(var_77, var_79, var_81, adj_77, adj_79, adj_81, adj_82);
-        wp::adj_extract(var_36, var_80, adj_36, adj_80, adj_81);
-        wp::adj_extract(var_36, var_78, adj_36, adj_78, adj_79);
-        wp::adj_extract(var_36, var_76, adj_36, adj_76, adj_77);
-        // adj: R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                  <L 46>
-        // adj: y_force = cat_4_vec3d(                                                            <L 45>
-        adj_col_stack3_1(var_72, var_73, var_74, adj_72, adj_73, adj_74, adj_75);
-        wp::adj_sub(var_71, var_50, adj_71, adj_50, adj_74);
-        wp::adj_sub(var_64, var_50, adj_64, adj_50, adj_73);
-        wp::adj_sub(var_57, var_50, adj_57, adj_50, adj_72);
-        // adj: R = col_stack3(A - O, B - O, C - O)                                               <L 44>
-        wp::adj_vec_t(var_66, var_68, var_70, adj_66, adj_68, adj_70, adj_71);
-        wp::adj_extract(var_42, var_69, adj_42, adj_69, adj_70);
-        wp::adj_extract(var_42, var_67, adj_42, adj_67, adj_68);
-        wp::adj_extract(var_42, var_65, adj_42, adj_65, adj_66);
-        // adj: C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                     <L 43>
-        wp::adj_vec_t(var_59, var_61, var_63, adj_59, adj_61, adj_63, adj_64);
-        wp::adj_extract(var_42, var_62, adj_42, adj_62, adj_63);
-        wp::adj_extract(var_42, var_60, adj_42, adj_60, adj_61);
-        wp::adj_extract(var_42, var_58, adj_42, adj_58, adj_59);
-        // adj: B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                     <L 42>
-        wp::adj_vec_t(var_52, var_54, var_56, adj_52, adj_54, adj_56, adj_57);
-        wp::adj_extract(var_42, var_55, adj_42, adj_55, adj_56);
-        wp::adj_extract(var_42, var_53, adj_42, adj_53, adj_54);
-        wp::adj_extract(var_42, var_51, adj_42, adj_51, adj_52);
-        // adj: A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                     <L 41>
-        wp::adj_vec_t(var_45, var_47, var_49, adj_45, adj_47, adj_49, adj_50);
-        wp::adj_extract(var_42, var_48, adj_42, adj_48, adj_49);
-        wp::adj_extract(var_42, var_46, adj_42, adj_46, adj_47);
-        wp::adj_extract(var_42, var_44, adj_42, adj_44, adj_45);
-        // adj: O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                   <L 40>
-        wp::adj_copy(var_43, adj_41, adj_42);
-        wp::adj_load(var_41, adj_41, adj_43);
-        wp::adj_address(var_hat_y, var_0, adj_hat_y, adj_0, adj_41);
-        // adj: hat_yi = hat_y[tid]                                                               <L 39>
-        wp::adj_copy(var_40, adj_38, adj_39);
-        wp::adj_load(var_38, adj_38, adj_40);
-        wp::adj_address(var_y, var_0, adj_y, adj_0, adj_38);
-        // adj: yi = y[tid]                                                                       <L 38>
-        wp::adj_copy(var_37, adj_35, adj_36);
-        wp::adj_load(var_35, adj_35, adj_37);
-        wp::adj_address(var_affine_ext_y_force, var_0, adj_affine_ext_y_force, adj_0, adj_35);
-        // adj: rest_y_force = affine_ext_y_force[tid]                                            <L 37>
-        var_14 = wp::iter_reverse(var_14);
-        start_for_1:;
-            if (iter_cmp(var_14) == 0) goto end_for_1;
-            var_15 = wp::iter_next(var_14);
-        	adj_16 = {};
-        	adj_17 = {};
-        	adj_18 = {};
-            // for j in range(dim + 1):                                                           <L 35>
-            var_17 = wp::add(var_4, var_16);
-            var_18 = wp::range(var_17);
-            var_18 = wp::iter_reverse(var_18);
-            start_for_3:;
-                if (iter_cmp(var_18) == 0) goto end_for_3;
-                var_19 = wp::iter_next(var_18);
-            	adj_20 = {};
-            	adj_21 = {};
-            	adj_22 = {};
-            	adj_23 = {};
-            	adj_24 = {};
-            	adj_25 = {};
-            	adj_26 = {};
-            	adj_27 = {};
-            	adj_28 = {};
-            	adj_29 = {};
-            	adj_30 = {};
-            	adj_31 = {};
-            	adj_32 = {};
-            	adj_33 = {};
-            	adj_34 = {};
-                // energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale       <L 36>
-                var_20 = wp::mod(var_15, var_4);
-                var_21 = wp::extract(var_gravity, var_20);
-                var_22 = wp::mod(var_15, var_4);
-                var_23 = wp::extract(var_12, var_22);
-                var_24 = wp::add(var_21, var_23);
-                var_25 = wp::neg(var_24);
-                var_26 = wp::address(var_y, var_0);
-                var_28 = wp::load(var_26);
-                var_27 = wp::extract(var_28, var_15);
-                var_29 = wp::mul(var_25, var_27);
-                var_30 = wp::div(var_15, var_4);
-                var_31 = wp::extract(var_9, var_30, var_19);
-                var_32 = wp::mul(var_29, var_31);
-                var_33 = wp::mul(var_32, var_scale);
-                // var_34 = wp::atomic_add(var_energy, var_0, var_33);
-                wp::adj_atomic_add(var_energy, var_0, var_33, adj_energy, adj_0, adj_33, adj_34);
-                wp::adj_mul(var_32, var_scale, adj_32, adj_scale, adj_33);
-                wp::adj_mul(var_29, var_31, adj_29, adj_31, adj_32);
-                wp::adj_extract(var_9, var_30, var_19, adj_9, adj_30, adj_19, adj_31);
-                wp::adj_div(var_15, var_4, var_30, adj_15, adj_4, adj_30);
-                wp::adj_mul(var_25, var_27, adj_25, adj_27, adj_29);
-                wp::adj_extract(var_28, var_15, adj_26, adj_15, adj_27);
-                wp::adj_load(var_26, adj_26, adj_28);
-                wp::adj_address(var_y, var_0, adj_y, adj_0, adj_26);
-                wp::adj_neg(var_24, adj_24, adj_25);
-                wp::adj_add(var_21, var_23, adj_21, adj_23, adj_24);
-                wp::adj_extract(var_12, var_22, adj_12, adj_22, adj_23);
-                wp::adj_mod(var_15, var_4, adj_15, adj_4, adj_22);
-                wp::adj_extract(var_gravity, var_20, adj_gravity, adj_20, adj_21);
-                wp::adj_mod(var_15, var_4, adj_15, adj_4, adj_20);
-                // adj: energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale  <L 36>
-            	goto start_for_3;
-            end_for_3:;
-            wp::adj_range(var_17, adj_17, adj_18);
-            wp::adj_add(var_4, var_16, adj_4, adj_16, adj_17);
-            // adj: for j in range(dim + 1):                                                      <L 35>
-        	goto start_for_1;
-        end_for_1:;
-        wp::adj_range(var_7, adj_7, adj_14);
-        // adj: for i in range(n_dof):                                                            <L 34>
-        wp::adj_copy(var_13, adj_11, adj_12);
-        wp::adj_load(var_11, adj_11, adj_13);
-        wp::adj_address(var_affine_ext_force, var_0, adj_affine_ext_force, adj_0, adj_11);
-        // adj: ext_force = affine_ext_force[tid]                                                 <L 33>
-        wp::adj_copy(var_10, adj_8, adj_9);
-        wp::adj_load(var_8, adj_8, adj_10);
-        wp::adj_address(var_mass_matrix, var_0, adj_mass_matrix, adj_0, adj_8);
-        // adj: mass = mass_matrix[tid]                                                           <L 32>
-        wp::adj_mul(var_6, var_4, adj_6, adj_4, adj_7);
-        wp::adj_add(var_4, var_5, adj_4, adj_5, adj_6);
-        // adj: n_dof = (dim + 1) * dim                                                           <L 31>
-        // adj: dim = 3                                                                           <L 30>
-        if (var_3) {
-        wp::adj_load(var_1, adj_1, adj_3);
-            label0:;
-            // adj: return                                                                        <L 29>
-        }
-        wp::adj_load(var_1, adj_1, adj_2);
-        wp::adj_address(var_affine_has_constraint, var_0, adj_affine_has_constraint, adj_0, adj_1);
-        // adj: if affine_has_constraint[tid]:                                                    <L 28>
-        // adj: tid = wp.tid()                                                                    <L 27>
-        // adj: def compute_body_force_energy_val_affine(                                         <L 16>
-        continue;
-    }
-}
-
-
-
 extern "C" __global__ void compute_body_force_energy_val_soft_cuda_kernel_forward(
     wp::launch_bounds_t dim,
     wp::array_t<wp::float64> var_energy,
@@ -3055,6 +1824,1237 @@ extern "C" __global__ void compute_body_force_energy_grad_soft_x_cuda_kernel_bac
         // adj: if soft_has_constraint[tid] or (                                                  <L 129>
         // adj: tid = wp.tid()                                                                    <L 128>
         // adj: def compute_body_force_energy_grad_soft_x(                                        <L 118>
+        continue;
+    }
+}
+
+
+
+extern "C" __global__ void compute_body_force_energy_val_affine_cuda_kernel_forward(
+    wp::launch_bounds_t dim,
+    wp::array_t<wp::float64> var_energy,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_y,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_hat_y,
+    wp::array_t<wp::mat_t<4,4,wp::float64>> var_mass_matrix,
+    wp::vec_t<3,wp::float64> var_gravity,
+    wp::array_t<wp::vec_t<3,wp::float64>> var_affine_ext_force,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_affine_ext_y_force,
+    wp::float64 var_scale,
+    wp::array_t<bool> var_affine_has_constraint)
+{
+    for (size_t _idx = static_cast<size_t>(blockDim.x) * static_cast<size_t>(blockIdx.x) + static_cast<size_t>(threadIdx.x);
+         _idx < dim.size;
+         _idx += static_cast<size_t>(blockDim.x) * static_cast<size_t>(gridDim.x))
+    {
+        // reset shared memory allocator
+        wp::tile_alloc_shared(0, true);
+
+        //---------
+        // primal vars
+        wp::int32 var_0;
+        bool* var_1;
+        bool var_2;
+        bool var_3;
+        const wp::int32 var_4 = 3;
+        const wp::int32 var_5 = 1;
+        wp::int32 var_6;
+        wp::int32 var_7;
+        wp::mat_t<4,4,wp::float64>* var_8;
+        wp::mat_t<4,4,wp::float64> var_9;
+        wp::mat_t<4,4,wp::float64> var_10;
+        wp::vec_t<3,wp::float64>* var_11;
+        wp::vec_t<3,wp::float64> var_12;
+        wp::vec_t<3,wp::float64> var_13;
+        wp::range_t var_14;
+        wp::int32 var_15;
+        const wp::int32 var_16 = 1;
+        wp::int32 var_17;
+        wp::range_t var_18;
+        wp::int32 var_19;
+        wp::int32 var_20;
+        wp::float64 var_21;
+        wp::int32 var_22;
+        wp::float64 var_23;
+        wp::float64 var_24;
+        wp::float64 var_25;
+        wp::vec_t<12,wp::float64>* var_26;
+        wp::float64 var_27;
+        wp::vec_t<12,wp::float64> var_28;
+        wp::float64 var_29;
+        wp::int32 var_30;
+        wp::float64 var_31;
+        wp::float64 var_32;
+        wp::float64 var_33;
+        wp::float64 var_34;
+        wp::vec_t<12,wp::float64>* var_35;
+        wp::vec_t<12,wp::float64> var_36;
+        wp::vec_t<12,wp::float64> var_37;
+        wp::vec_t<12,wp::float64>* var_38;
+        wp::vec_t<12,wp::float64> var_39;
+        wp::vec_t<12,wp::float64> var_40;
+        wp::vec_t<12,wp::float64>* var_41;
+        wp::vec_t<12,wp::float64> var_42;
+        wp::vec_t<12,wp::float64> var_43;
+        const wp::int32 var_44 = 9;
+        wp::float64 var_45;
+        const wp::int32 var_46 = 10;
+        wp::float64 var_47;
+        const wp::int32 var_48 = 11;
+        wp::float64 var_49;
+        wp::vec_t<3,wp::float64> var_50;
+        const wp::int32 var_51 = 0;
+        wp::float64 var_52;
+        const wp::int32 var_53 = 1;
+        wp::float64 var_54;
+        const wp::int32 var_55 = 2;
+        wp::float64 var_56;
+        wp::vec_t<3,wp::float64> var_57;
+        const wp::int32 var_58 = 3;
+        wp::float64 var_59;
+        const wp::int32 var_60 = 4;
+        wp::float64 var_61;
+        const wp::int32 var_62 = 5;
+        wp::float64 var_63;
+        wp::vec_t<3,wp::float64> var_64;
+        const wp::int32 var_65 = 6;
+        wp::float64 var_66;
+        const wp::int32 var_67 = 7;
+        wp::float64 var_68;
+        const wp::int32 var_69 = 8;
+        wp::float64 var_70;
+        wp::vec_t<3,wp::float64> var_71;
+        wp::vec_t<3,wp::float64> var_72;
+        wp::vec_t<3,wp::float64> var_73;
+        wp::vec_t<3,wp::float64> var_74;
+        wp::mat_t<3,3,wp::float64> var_75;
+        const wp::int32 var_76 = 0;
+        wp::float64 var_77;
+        const wp::int32 var_78 = 1;
+        wp::float64 var_79;
+        const wp::int32 var_80 = 2;
+        wp::float64 var_81;
+        wp::vec_t<3,wp::float64> var_82;
+        wp::vec_t<3,wp::float64> var_83;
+        const wp::int32 var_84 = 3;
+        wp::float64 var_85;
+        const wp::int32 var_86 = 4;
+        wp::float64 var_87;
+        const wp::int32 var_88 = 5;
+        wp::float64 var_89;
+        wp::vec_t<3,wp::float64> var_90;
+        wp::vec_t<3,wp::float64> var_91;
+        const wp::int32 var_92 = 6;
+        wp::float64 var_93;
+        const wp::int32 var_94 = 7;
+        wp::float64 var_95;
+        const wp::int32 var_96 = 8;
+        wp::float64 var_97;
+        wp::vec_t<3,wp::float64> var_98;
+        wp::vec_t<3,wp::float64> var_99;
+        const wp::int32 var_100 = 9;
+        wp::float64 var_101;
+        const wp::int32 var_102 = 10;
+        wp::float64 var_103;
+        const wp::int32 var_104 = 11;
+        wp::float64 var_105;
+        wp::vec_t<3,wp::float64> var_106;
+        wp::vec_t<3,wp::float64> var_107;
+        wp::vec_t<12,wp::float64> var_108;
+        const wp::int32 var_109 = 0;
+        wp::float64 var_110;
+        wp::float64 var_111;
+        wp::float64 var_112;
+        wp::float64 var_113;
+        wp::float64 var_114;
+        wp::float64 var_115;
+        const wp::int32 var_116 = 1;
+        wp::float64 var_117;
+        wp::float64 var_118;
+        wp::float64 var_119;
+        wp::float64 var_120;
+        wp::float64 var_121;
+        wp::float64 var_122;
+        const wp::int32 var_123 = 2;
+        wp::float64 var_124;
+        wp::float64 var_125;
+        wp::float64 var_126;
+        wp::float64 var_127;
+        wp::float64 var_128;
+        wp::float64 var_129;
+        const wp::int32 var_130 = 3;
+        wp::float64 var_131;
+        wp::float64 var_132;
+        wp::float64 var_133;
+        wp::float64 var_134;
+        wp::float64 var_135;
+        wp::float64 var_136;
+        const wp::int32 var_137 = 4;
+        wp::float64 var_138;
+        wp::float64 var_139;
+        wp::float64 var_140;
+        wp::float64 var_141;
+        wp::float64 var_142;
+        wp::float64 var_143;
+        const wp::int32 var_144 = 5;
+        wp::float64 var_145;
+        wp::float64 var_146;
+        wp::float64 var_147;
+        wp::float64 var_148;
+        wp::float64 var_149;
+        wp::float64 var_150;
+        const wp::int32 var_151 = 6;
+        wp::float64 var_152;
+        wp::float64 var_153;
+        wp::float64 var_154;
+        wp::float64 var_155;
+        wp::float64 var_156;
+        wp::float64 var_157;
+        const wp::int32 var_158 = 7;
+        wp::float64 var_159;
+        wp::float64 var_160;
+        wp::float64 var_161;
+        wp::float64 var_162;
+        wp::float64 var_163;
+        wp::float64 var_164;
+        const wp::int32 var_165 = 8;
+        wp::float64 var_166;
+        wp::float64 var_167;
+        wp::float64 var_168;
+        wp::float64 var_169;
+        wp::float64 var_170;
+        wp::float64 var_171;
+        const wp::int32 var_172 = 9;
+        wp::float64 var_173;
+        wp::float64 var_174;
+        wp::float64 var_175;
+        wp::float64 var_176;
+        wp::float64 var_177;
+        wp::float64 var_178;
+        const wp::int32 var_179 = 10;
+        wp::float64 var_180;
+        wp::float64 var_181;
+        wp::float64 var_182;
+        wp::float64 var_183;
+        wp::float64 var_184;
+        wp::float64 var_185;
+        const wp::int32 var_186 = 11;
+        wp::float64 var_187;
+        wp::float64 var_188;
+        wp::float64 var_189;
+        wp::float64 var_190;
+        wp::float64 var_191;
+        wp::float64 var_192;
+        //---------
+        // forward
+        // def compute_body_force_energy_val_affine(                                              <L 16>
+        // tid = wp.tid()                                                                         <L 27>
+        var_0 = builtin_tid1d();
+        // if affine_has_constraint[tid]:                                                         <L 28>
+        var_1 = wp::address(var_affine_has_constraint, var_0);
+        var_2 = wp::load(var_1);
+        if (var_2) {
+            // return                                                                             <L 29>
+            continue;
+        }
+        var_3 = wp::load(var_1);
+        // dim = 3                                                                                <L 30>
+        // n_dof = (dim + 1) * dim                                                                <L 31>
+        var_6 = wp::add(var_4, var_5);
+        var_7 = wp::mul(var_6, var_4);
+        // mass = mass_matrix[tid]                                                                <L 32>
+        var_8 = wp::address(var_mass_matrix, var_0);
+        var_10 = wp::load(var_8);
+        var_9 = wp::copy(var_10);
+        // ext_force = affine_ext_force[tid]                                                      <L 33>
+        var_11 = wp::address(var_affine_ext_force, var_0);
+        var_13 = wp::load(var_11);
+        var_12 = wp::copy(var_13);
+        // for i in range(n_dof):                                                                 <L 34>
+        var_14 = wp::range(var_7);
+        start_for_1:;
+            if (iter_cmp(var_14) == 0) goto end_for_1;
+            var_15 = wp::iter_next(var_14);
+            // for j in range(dim + 1):                                                           <L 35>
+            var_17 = wp::add(var_4, var_16);
+            var_18 = wp::range(var_17);
+            start_for_3:;
+                if (iter_cmp(var_18) == 0) goto end_for_3;
+                var_19 = wp::iter_next(var_18);
+                // energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale       <L 36>
+                var_20 = wp::mod(var_15, var_4);
+                var_21 = wp::extract(var_gravity, var_20);
+                var_22 = wp::mod(var_15, var_4);
+                var_23 = wp::extract(var_12, var_22);
+                var_24 = wp::add(var_21, var_23);
+                var_25 = wp::neg(var_24);
+                var_26 = wp::address(var_y, var_0);
+                var_28 = wp::load(var_26);
+                var_27 = wp::extract(var_28, var_15);
+                var_29 = wp::mul(var_25, var_27);
+                var_30 = wp::div(var_15, var_4);
+                var_31 = wp::extract(var_9, var_30, var_19);
+                var_32 = wp::mul(var_29, var_31);
+                var_33 = wp::mul(var_32, var_scale);
+                var_34 = wp::atomic_add(var_energy, var_0, var_33);
+                goto start_for_3;
+            end_for_3:;
+            goto start_for_1;
+        end_for_1:;
+        // rest_y_force = affine_ext_y_force[tid]                                                 <L 37>
+        var_35 = wp::address(var_affine_ext_y_force, var_0);
+        var_37 = wp::load(var_35);
+        var_36 = wp::copy(var_37);
+        // yi = y[tid]                                                                            <L 38>
+        var_38 = wp::address(var_y, var_0);
+        var_40 = wp::load(var_38);
+        var_39 = wp::copy(var_40);
+        // hat_yi = hat_y[tid]                                                                    <L 39>
+        var_41 = wp::address(var_hat_y, var_0);
+        var_43 = wp::load(var_41);
+        var_42 = wp::copy(var_43);
+        // O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                        <L 40>
+        var_45 = wp::extract(var_42, var_44);
+        var_47 = wp::extract(var_42, var_46);
+        var_49 = wp::extract(var_42, var_48);
+        var_50 = wp::vec_t<3,wp::float64>(var_45, var_47, var_49);
+        // A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                          <L 41>
+        var_52 = wp::extract(var_42, var_51);
+        var_54 = wp::extract(var_42, var_53);
+        var_56 = wp::extract(var_42, var_55);
+        var_57 = wp::vec_t<3,wp::float64>(var_52, var_54, var_56);
+        // B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                          <L 42>
+        var_59 = wp::extract(var_42, var_58);
+        var_61 = wp::extract(var_42, var_60);
+        var_63 = wp::extract(var_42, var_62);
+        var_64 = wp::vec_t<3,wp::float64>(var_59, var_61, var_63);
+        // C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                          <L 43>
+        var_66 = wp::extract(var_42, var_65);
+        var_68 = wp::extract(var_42, var_67);
+        var_70 = wp::extract(var_42, var_69);
+        var_71 = wp::vec_t<3,wp::float64>(var_66, var_68, var_70);
+        // R = col_stack3(A - O, B - O, C - O)                                                    <L 44>
+        var_72 = wp::sub(var_57, var_50);
+        var_73 = wp::sub(var_64, var_50);
+        var_74 = wp::sub(var_71, var_50);
+        var_75 = col_stack3_1(var_72, var_73, var_74);
+        // y_force = cat_4_vec3d(                                                                 <L 45>
+        // R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                       <L 46>
+        var_77 = wp::extract(var_36, var_76);
+        var_79 = wp::extract(var_36, var_78);
+        var_81 = wp::extract(var_36, var_80);
+        var_82 = wp::vec_t<3,wp::float64>(var_77, var_79, var_81);
+        var_83 = wp::mul(var_75, var_82);
+        // R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                       <L 47>
+        var_85 = wp::extract(var_36, var_84);
+        var_87 = wp::extract(var_36, var_86);
+        var_89 = wp::extract(var_36, var_88);
+        var_90 = wp::vec_t<3,wp::float64>(var_85, var_87, var_89);
+        var_91 = wp::mul(var_75, var_90);
+        // R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                       <L 48>
+        var_93 = wp::extract(var_36, var_92);
+        var_95 = wp::extract(var_36, var_94);
+        var_97 = wp::extract(var_36, var_96);
+        var_98 = wp::vec_t<3,wp::float64>(var_93, var_95, var_97);
+        var_99 = wp::mul(var_75, var_98);
+        // R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                     <L 49>
+        var_101 = wp::extract(var_36, var_100);
+        var_103 = wp::extract(var_36, var_102);
+        var_105 = wp::extract(var_36, var_104);
+        var_106 = wp::vec_t<3,wp::float64>(var_101, var_103, var_105);
+        var_107 = wp::mul(var_75, var_106);
+        var_108 = cat_4_vec3d_0(var_83, var_91, var_99, var_107);
+        // for d in range(12):                                                                    <L 51>
+        // energy[tid] += -y_force[d] * yi[d] * scale                                             <L 52>
+        var_110 = wp::extract(var_108, var_109);
+        var_111 = wp::neg(var_110);
+        var_112 = wp::extract(var_39, var_109);
+        var_113 = wp::mul(var_111, var_112);
+        var_114 = wp::mul(var_113, var_scale);
+        var_115 = wp::atomic_add(var_energy, var_0, var_114);
+        var_117 = wp::extract(var_108, var_116);
+        var_118 = wp::neg(var_117);
+        var_119 = wp::extract(var_39, var_116);
+        var_120 = wp::mul(var_118, var_119);
+        var_121 = wp::mul(var_120, var_scale);
+        var_122 = wp::atomic_add(var_energy, var_0, var_121);
+        var_124 = wp::extract(var_108, var_123);
+        var_125 = wp::neg(var_124);
+        var_126 = wp::extract(var_39, var_123);
+        var_127 = wp::mul(var_125, var_126);
+        var_128 = wp::mul(var_127, var_scale);
+        var_129 = wp::atomic_add(var_energy, var_0, var_128);
+        var_131 = wp::extract(var_108, var_130);
+        var_132 = wp::neg(var_131);
+        var_133 = wp::extract(var_39, var_130);
+        var_134 = wp::mul(var_132, var_133);
+        var_135 = wp::mul(var_134, var_scale);
+        var_136 = wp::atomic_add(var_energy, var_0, var_135);
+        var_138 = wp::extract(var_108, var_137);
+        var_139 = wp::neg(var_138);
+        var_140 = wp::extract(var_39, var_137);
+        var_141 = wp::mul(var_139, var_140);
+        var_142 = wp::mul(var_141, var_scale);
+        var_143 = wp::atomic_add(var_energy, var_0, var_142);
+        var_145 = wp::extract(var_108, var_144);
+        var_146 = wp::neg(var_145);
+        var_147 = wp::extract(var_39, var_144);
+        var_148 = wp::mul(var_146, var_147);
+        var_149 = wp::mul(var_148, var_scale);
+        var_150 = wp::atomic_add(var_energy, var_0, var_149);
+        var_152 = wp::extract(var_108, var_151);
+        var_153 = wp::neg(var_152);
+        var_154 = wp::extract(var_39, var_151);
+        var_155 = wp::mul(var_153, var_154);
+        var_156 = wp::mul(var_155, var_scale);
+        var_157 = wp::atomic_add(var_energy, var_0, var_156);
+        var_159 = wp::extract(var_108, var_158);
+        var_160 = wp::neg(var_159);
+        var_161 = wp::extract(var_39, var_158);
+        var_162 = wp::mul(var_160, var_161);
+        var_163 = wp::mul(var_162, var_scale);
+        var_164 = wp::atomic_add(var_energy, var_0, var_163);
+        var_166 = wp::extract(var_108, var_165);
+        var_167 = wp::neg(var_166);
+        var_168 = wp::extract(var_39, var_165);
+        var_169 = wp::mul(var_167, var_168);
+        var_170 = wp::mul(var_169, var_scale);
+        var_171 = wp::atomic_add(var_energy, var_0, var_170);
+        var_173 = wp::extract(var_108, var_172);
+        var_174 = wp::neg(var_173);
+        var_175 = wp::extract(var_39, var_172);
+        var_176 = wp::mul(var_174, var_175);
+        var_177 = wp::mul(var_176, var_scale);
+        var_178 = wp::atomic_add(var_energy, var_0, var_177);
+        var_180 = wp::extract(var_108, var_179);
+        var_181 = wp::neg(var_180);
+        var_182 = wp::extract(var_39, var_179);
+        var_183 = wp::mul(var_181, var_182);
+        var_184 = wp::mul(var_183, var_scale);
+        var_185 = wp::atomic_add(var_energy, var_0, var_184);
+        var_187 = wp::extract(var_108, var_186);
+        var_188 = wp::neg(var_187);
+        var_189 = wp::extract(var_39, var_186);
+        var_190 = wp::mul(var_188, var_189);
+        var_191 = wp::mul(var_190, var_scale);
+        var_192 = wp::atomic_add(var_energy, var_0, var_191);
+    }
+}
+
+
+
+extern "C" __global__ void compute_body_force_energy_val_affine_cuda_kernel_backward(
+    wp::launch_bounds_t dim,
+    wp::array_t<wp::float64> var_energy,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_y,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_hat_y,
+    wp::array_t<wp::mat_t<4,4,wp::float64>> var_mass_matrix,
+    wp::vec_t<3,wp::float64> var_gravity,
+    wp::array_t<wp::vec_t<3,wp::float64>> var_affine_ext_force,
+    wp::array_t<wp::vec_t<12,wp::float64>> var_affine_ext_y_force,
+    wp::float64 var_scale,
+    wp::array_t<bool> var_affine_has_constraint,
+    wp::array_t<wp::float64> adj_energy,
+    wp::array_t<wp::vec_t<12,wp::float64>> adj_y,
+    wp::array_t<wp::vec_t<12,wp::float64>> adj_hat_y,
+    wp::array_t<wp::mat_t<4,4,wp::float64>> adj_mass_matrix,
+    wp::vec_t<3,wp::float64> adj_gravity,
+    wp::array_t<wp::vec_t<3,wp::float64>> adj_affine_ext_force,
+    wp::array_t<wp::vec_t<12,wp::float64>> adj_affine_ext_y_force,
+    wp::float64 adj_scale,
+    wp::array_t<bool> adj_affine_has_constraint)
+{
+    for (size_t _idx = static_cast<size_t>(blockDim.x) * static_cast<size_t>(blockIdx.x) + static_cast<size_t>(threadIdx.x);
+         _idx < dim.size;
+         _idx += static_cast<size_t>(blockDim.x) * static_cast<size_t>(gridDim.x))
+    {
+        // reset shared memory allocator
+        wp::tile_alloc_shared(0, true);
+
+        //---------
+        // primal vars
+        wp::int32 var_0;
+        bool* var_1;
+        bool var_2;
+        bool var_3;
+        const wp::int32 var_4 = 3;
+        const wp::int32 var_5 = 1;
+        wp::int32 var_6;
+        wp::int32 var_7;
+        wp::mat_t<4,4,wp::float64>* var_8;
+        wp::mat_t<4,4,wp::float64> var_9;
+        wp::mat_t<4,4,wp::float64> var_10;
+        wp::vec_t<3,wp::float64>* var_11;
+        wp::vec_t<3,wp::float64> var_12;
+        wp::vec_t<3,wp::float64> var_13;
+        wp::range_t var_14;
+        wp::int32 var_15;
+        const wp::int32 var_16 = 1;
+        wp::int32 var_17;
+        wp::range_t var_18;
+        wp::int32 var_19;
+        wp::int32 var_20;
+        wp::float64 var_21;
+        wp::int32 var_22;
+        wp::float64 var_23;
+        wp::float64 var_24;
+        wp::float64 var_25;
+        wp::vec_t<12,wp::float64>* var_26;
+        wp::float64 var_27;
+        wp::vec_t<12,wp::float64> var_28;
+        wp::float64 var_29;
+        wp::int32 var_30;
+        wp::float64 var_31;
+        wp::float64 var_32;
+        wp::float64 var_33;
+        wp::float64 var_34;
+        wp::vec_t<12,wp::float64>* var_35;
+        wp::vec_t<12,wp::float64> var_36;
+        wp::vec_t<12,wp::float64> var_37;
+        wp::vec_t<12,wp::float64>* var_38;
+        wp::vec_t<12,wp::float64> var_39;
+        wp::vec_t<12,wp::float64> var_40;
+        wp::vec_t<12,wp::float64>* var_41;
+        wp::vec_t<12,wp::float64> var_42;
+        wp::vec_t<12,wp::float64> var_43;
+        const wp::int32 var_44 = 9;
+        wp::float64 var_45;
+        const wp::int32 var_46 = 10;
+        wp::float64 var_47;
+        const wp::int32 var_48 = 11;
+        wp::float64 var_49;
+        wp::vec_t<3,wp::float64> var_50;
+        const wp::int32 var_51 = 0;
+        wp::float64 var_52;
+        const wp::int32 var_53 = 1;
+        wp::float64 var_54;
+        const wp::int32 var_55 = 2;
+        wp::float64 var_56;
+        wp::vec_t<3,wp::float64> var_57;
+        const wp::int32 var_58 = 3;
+        wp::float64 var_59;
+        const wp::int32 var_60 = 4;
+        wp::float64 var_61;
+        const wp::int32 var_62 = 5;
+        wp::float64 var_63;
+        wp::vec_t<3,wp::float64> var_64;
+        const wp::int32 var_65 = 6;
+        wp::float64 var_66;
+        const wp::int32 var_67 = 7;
+        wp::float64 var_68;
+        const wp::int32 var_69 = 8;
+        wp::float64 var_70;
+        wp::vec_t<3,wp::float64> var_71;
+        wp::vec_t<3,wp::float64> var_72;
+        wp::vec_t<3,wp::float64> var_73;
+        wp::vec_t<3,wp::float64> var_74;
+        wp::mat_t<3,3,wp::float64> var_75;
+        const wp::int32 var_76 = 0;
+        wp::float64 var_77;
+        const wp::int32 var_78 = 1;
+        wp::float64 var_79;
+        const wp::int32 var_80 = 2;
+        wp::float64 var_81;
+        wp::vec_t<3,wp::float64> var_82;
+        wp::vec_t<3,wp::float64> var_83;
+        const wp::int32 var_84 = 3;
+        wp::float64 var_85;
+        const wp::int32 var_86 = 4;
+        wp::float64 var_87;
+        const wp::int32 var_88 = 5;
+        wp::float64 var_89;
+        wp::vec_t<3,wp::float64> var_90;
+        wp::vec_t<3,wp::float64> var_91;
+        const wp::int32 var_92 = 6;
+        wp::float64 var_93;
+        const wp::int32 var_94 = 7;
+        wp::float64 var_95;
+        const wp::int32 var_96 = 8;
+        wp::float64 var_97;
+        wp::vec_t<3,wp::float64> var_98;
+        wp::vec_t<3,wp::float64> var_99;
+        const wp::int32 var_100 = 9;
+        wp::float64 var_101;
+        const wp::int32 var_102 = 10;
+        wp::float64 var_103;
+        const wp::int32 var_104 = 11;
+        wp::float64 var_105;
+        wp::vec_t<3,wp::float64> var_106;
+        wp::vec_t<3,wp::float64> var_107;
+        wp::vec_t<12,wp::float64> var_108;
+        const wp::int32 var_109 = 0;
+        wp::float64 var_110;
+        wp::float64 var_111;
+        wp::float64 var_112;
+        wp::float64 var_113;
+        wp::float64 var_114;
+        wp::float64 var_115;
+        const wp::int32 var_116 = 1;
+        wp::float64 var_117;
+        wp::float64 var_118;
+        wp::float64 var_119;
+        wp::float64 var_120;
+        wp::float64 var_121;
+        wp::float64 var_122;
+        const wp::int32 var_123 = 2;
+        wp::float64 var_124;
+        wp::float64 var_125;
+        wp::float64 var_126;
+        wp::float64 var_127;
+        wp::float64 var_128;
+        wp::float64 var_129;
+        const wp::int32 var_130 = 3;
+        wp::float64 var_131;
+        wp::float64 var_132;
+        wp::float64 var_133;
+        wp::float64 var_134;
+        wp::float64 var_135;
+        wp::float64 var_136;
+        const wp::int32 var_137 = 4;
+        wp::float64 var_138;
+        wp::float64 var_139;
+        wp::float64 var_140;
+        wp::float64 var_141;
+        wp::float64 var_142;
+        wp::float64 var_143;
+        const wp::int32 var_144 = 5;
+        wp::float64 var_145;
+        wp::float64 var_146;
+        wp::float64 var_147;
+        wp::float64 var_148;
+        wp::float64 var_149;
+        wp::float64 var_150;
+        const wp::int32 var_151 = 6;
+        wp::float64 var_152;
+        wp::float64 var_153;
+        wp::float64 var_154;
+        wp::float64 var_155;
+        wp::float64 var_156;
+        wp::float64 var_157;
+        const wp::int32 var_158 = 7;
+        wp::float64 var_159;
+        wp::float64 var_160;
+        wp::float64 var_161;
+        wp::float64 var_162;
+        wp::float64 var_163;
+        wp::float64 var_164;
+        const wp::int32 var_165 = 8;
+        wp::float64 var_166;
+        wp::float64 var_167;
+        wp::float64 var_168;
+        wp::float64 var_169;
+        wp::float64 var_170;
+        wp::float64 var_171;
+        const wp::int32 var_172 = 9;
+        wp::float64 var_173;
+        wp::float64 var_174;
+        wp::float64 var_175;
+        wp::float64 var_176;
+        wp::float64 var_177;
+        wp::float64 var_178;
+        const wp::int32 var_179 = 10;
+        wp::float64 var_180;
+        wp::float64 var_181;
+        wp::float64 var_182;
+        wp::float64 var_183;
+        wp::float64 var_184;
+        wp::float64 var_185;
+        const wp::int32 var_186 = 11;
+        wp::float64 var_187;
+        wp::float64 var_188;
+        wp::float64 var_189;
+        wp::float64 var_190;
+        wp::float64 var_191;
+        wp::float64 var_192;
+        //---------
+        // dual vars
+        wp::int32 adj_0 = {};
+        bool adj_1 = {};
+        bool adj_2 = {};
+        bool adj_3 = {};
+        wp::int32 adj_4 = {};
+        wp::int32 adj_5 = {};
+        wp::int32 adj_6 = {};
+        wp::int32 adj_7 = {};
+        wp::mat_t<4,4,wp::float64> adj_8 = {};
+        wp::mat_t<4,4,wp::float64> adj_9 = {};
+        wp::mat_t<4,4,wp::float64> adj_10 = {};
+        wp::vec_t<3,wp::float64> adj_11 = {};
+        wp::vec_t<3,wp::float64> adj_12 = {};
+        wp::vec_t<3,wp::float64> adj_13 = {};
+        wp::range_t adj_14 = {};
+        wp::int32 adj_15 = {};
+        wp::int32 adj_16 = {};
+        wp::int32 adj_17 = {};
+        wp::range_t adj_18 = {};
+        wp::int32 adj_19 = {};
+        wp::int32 adj_20 = {};
+        wp::float64 adj_21 = {};
+        wp::int32 adj_22 = {};
+        wp::float64 adj_23 = {};
+        wp::float64 adj_24 = {};
+        wp::float64 adj_25 = {};
+        wp::vec_t<12,wp::float64> adj_26 = {};
+        wp::float64 adj_27 = {};
+        wp::vec_t<12,wp::float64> adj_28 = {};
+        wp::float64 adj_29 = {};
+        wp::int32 adj_30 = {};
+        wp::float64 adj_31 = {};
+        wp::float64 adj_32 = {};
+        wp::float64 adj_33 = {};
+        wp::float64 adj_34 = {};
+        wp::vec_t<12,wp::float64> adj_35 = {};
+        wp::vec_t<12,wp::float64> adj_36 = {};
+        wp::vec_t<12,wp::float64> adj_37 = {};
+        wp::vec_t<12,wp::float64> adj_38 = {};
+        wp::vec_t<12,wp::float64> adj_39 = {};
+        wp::vec_t<12,wp::float64> adj_40 = {};
+        wp::vec_t<12,wp::float64> adj_41 = {};
+        wp::vec_t<12,wp::float64> adj_42 = {};
+        wp::vec_t<12,wp::float64> adj_43 = {};
+        wp::int32 adj_44 = {};
+        wp::float64 adj_45 = {};
+        wp::int32 adj_46 = {};
+        wp::float64 adj_47 = {};
+        wp::int32 adj_48 = {};
+        wp::float64 adj_49 = {};
+        wp::vec_t<3,wp::float64> adj_50 = {};
+        wp::int32 adj_51 = {};
+        wp::float64 adj_52 = {};
+        wp::int32 adj_53 = {};
+        wp::float64 adj_54 = {};
+        wp::int32 adj_55 = {};
+        wp::float64 adj_56 = {};
+        wp::vec_t<3,wp::float64> adj_57 = {};
+        wp::int32 adj_58 = {};
+        wp::float64 adj_59 = {};
+        wp::int32 adj_60 = {};
+        wp::float64 adj_61 = {};
+        wp::int32 adj_62 = {};
+        wp::float64 adj_63 = {};
+        wp::vec_t<3,wp::float64> adj_64 = {};
+        wp::int32 adj_65 = {};
+        wp::float64 adj_66 = {};
+        wp::int32 adj_67 = {};
+        wp::float64 adj_68 = {};
+        wp::int32 adj_69 = {};
+        wp::float64 adj_70 = {};
+        wp::vec_t<3,wp::float64> adj_71 = {};
+        wp::vec_t<3,wp::float64> adj_72 = {};
+        wp::vec_t<3,wp::float64> adj_73 = {};
+        wp::vec_t<3,wp::float64> adj_74 = {};
+        wp::mat_t<3,3,wp::float64> adj_75 = {};
+        wp::int32 adj_76 = {};
+        wp::float64 adj_77 = {};
+        wp::int32 adj_78 = {};
+        wp::float64 adj_79 = {};
+        wp::int32 adj_80 = {};
+        wp::float64 adj_81 = {};
+        wp::vec_t<3,wp::float64> adj_82 = {};
+        wp::vec_t<3,wp::float64> adj_83 = {};
+        wp::int32 adj_84 = {};
+        wp::float64 adj_85 = {};
+        wp::int32 adj_86 = {};
+        wp::float64 adj_87 = {};
+        wp::int32 adj_88 = {};
+        wp::float64 adj_89 = {};
+        wp::vec_t<3,wp::float64> adj_90 = {};
+        wp::vec_t<3,wp::float64> adj_91 = {};
+        wp::int32 adj_92 = {};
+        wp::float64 adj_93 = {};
+        wp::int32 adj_94 = {};
+        wp::float64 adj_95 = {};
+        wp::int32 adj_96 = {};
+        wp::float64 adj_97 = {};
+        wp::vec_t<3,wp::float64> adj_98 = {};
+        wp::vec_t<3,wp::float64> adj_99 = {};
+        wp::int32 adj_100 = {};
+        wp::float64 adj_101 = {};
+        wp::int32 adj_102 = {};
+        wp::float64 adj_103 = {};
+        wp::int32 adj_104 = {};
+        wp::float64 adj_105 = {};
+        wp::vec_t<3,wp::float64> adj_106 = {};
+        wp::vec_t<3,wp::float64> adj_107 = {};
+        wp::vec_t<12,wp::float64> adj_108 = {};
+        wp::int32 adj_109 = {};
+        wp::float64 adj_110 = {};
+        wp::float64 adj_111 = {};
+        wp::float64 adj_112 = {};
+        wp::float64 adj_113 = {};
+        wp::float64 adj_114 = {};
+        wp::float64 adj_115 = {};
+        wp::int32 adj_116 = {};
+        wp::float64 adj_117 = {};
+        wp::float64 adj_118 = {};
+        wp::float64 adj_119 = {};
+        wp::float64 adj_120 = {};
+        wp::float64 adj_121 = {};
+        wp::float64 adj_122 = {};
+        wp::int32 adj_123 = {};
+        wp::float64 adj_124 = {};
+        wp::float64 adj_125 = {};
+        wp::float64 adj_126 = {};
+        wp::float64 adj_127 = {};
+        wp::float64 adj_128 = {};
+        wp::float64 adj_129 = {};
+        wp::int32 adj_130 = {};
+        wp::float64 adj_131 = {};
+        wp::float64 adj_132 = {};
+        wp::float64 adj_133 = {};
+        wp::float64 adj_134 = {};
+        wp::float64 adj_135 = {};
+        wp::float64 adj_136 = {};
+        wp::int32 adj_137 = {};
+        wp::float64 adj_138 = {};
+        wp::float64 adj_139 = {};
+        wp::float64 adj_140 = {};
+        wp::float64 adj_141 = {};
+        wp::float64 adj_142 = {};
+        wp::float64 adj_143 = {};
+        wp::int32 adj_144 = {};
+        wp::float64 adj_145 = {};
+        wp::float64 adj_146 = {};
+        wp::float64 adj_147 = {};
+        wp::float64 adj_148 = {};
+        wp::float64 adj_149 = {};
+        wp::float64 adj_150 = {};
+        wp::int32 adj_151 = {};
+        wp::float64 adj_152 = {};
+        wp::float64 adj_153 = {};
+        wp::float64 adj_154 = {};
+        wp::float64 adj_155 = {};
+        wp::float64 adj_156 = {};
+        wp::float64 adj_157 = {};
+        wp::int32 adj_158 = {};
+        wp::float64 adj_159 = {};
+        wp::float64 adj_160 = {};
+        wp::float64 adj_161 = {};
+        wp::float64 adj_162 = {};
+        wp::float64 adj_163 = {};
+        wp::float64 adj_164 = {};
+        wp::int32 adj_165 = {};
+        wp::float64 adj_166 = {};
+        wp::float64 adj_167 = {};
+        wp::float64 adj_168 = {};
+        wp::float64 adj_169 = {};
+        wp::float64 adj_170 = {};
+        wp::float64 adj_171 = {};
+        wp::int32 adj_172 = {};
+        wp::float64 adj_173 = {};
+        wp::float64 adj_174 = {};
+        wp::float64 adj_175 = {};
+        wp::float64 adj_176 = {};
+        wp::float64 adj_177 = {};
+        wp::float64 adj_178 = {};
+        wp::int32 adj_179 = {};
+        wp::float64 adj_180 = {};
+        wp::float64 adj_181 = {};
+        wp::float64 adj_182 = {};
+        wp::float64 adj_183 = {};
+        wp::float64 adj_184 = {};
+        wp::float64 adj_185 = {};
+        wp::int32 adj_186 = {};
+        wp::float64 adj_187 = {};
+        wp::float64 adj_188 = {};
+        wp::float64 adj_189 = {};
+        wp::float64 adj_190 = {};
+        wp::float64 adj_191 = {};
+        wp::float64 adj_192 = {};
+        //---------
+        // forward
+        // def compute_body_force_energy_val_affine(                                              <L 16>
+        // tid = wp.tid()                                                                         <L 27>
+        var_0 = builtin_tid1d();
+        // if affine_has_constraint[tid]:                                                         <L 28>
+        var_1 = wp::address(var_affine_has_constraint, var_0);
+        var_2 = wp::load(var_1);
+        if (var_2) {
+            // return                                                                             <L 29>
+            goto label0;
+        }
+        var_3 = wp::load(var_1);
+        // dim = 3                                                                                <L 30>
+        // n_dof = (dim + 1) * dim                                                                <L 31>
+        var_6 = wp::add(var_4, var_5);
+        var_7 = wp::mul(var_6, var_4);
+        // mass = mass_matrix[tid]                                                                <L 32>
+        var_8 = wp::address(var_mass_matrix, var_0);
+        var_10 = wp::load(var_8);
+        var_9 = wp::copy(var_10);
+        // ext_force = affine_ext_force[tid]                                                      <L 33>
+        var_11 = wp::address(var_affine_ext_force, var_0);
+        var_13 = wp::load(var_11);
+        var_12 = wp::copy(var_13);
+        // for i in range(n_dof):                                                                 <L 34>
+        var_14 = wp::range(var_7);
+        // rest_y_force = affine_ext_y_force[tid]                                                 <L 37>
+        var_35 = wp::address(var_affine_ext_y_force, var_0);
+        var_37 = wp::load(var_35);
+        var_36 = wp::copy(var_37);
+        // yi = y[tid]                                                                            <L 38>
+        var_38 = wp::address(var_y, var_0);
+        var_40 = wp::load(var_38);
+        var_39 = wp::copy(var_40);
+        // hat_yi = hat_y[tid]                                                                    <L 39>
+        var_41 = wp::address(var_hat_y, var_0);
+        var_43 = wp::load(var_41);
+        var_42 = wp::copy(var_43);
+        // O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                        <L 40>
+        var_45 = wp::extract(var_42, var_44);
+        var_47 = wp::extract(var_42, var_46);
+        var_49 = wp::extract(var_42, var_48);
+        var_50 = wp::vec_t<3,wp::float64>(var_45, var_47, var_49);
+        // A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                          <L 41>
+        var_52 = wp::extract(var_42, var_51);
+        var_54 = wp::extract(var_42, var_53);
+        var_56 = wp::extract(var_42, var_55);
+        var_57 = wp::vec_t<3,wp::float64>(var_52, var_54, var_56);
+        // B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                          <L 42>
+        var_59 = wp::extract(var_42, var_58);
+        var_61 = wp::extract(var_42, var_60);
+        var_63 = wp::extract(var_42, var_62);
+        var_64 = wp::vec_t<3,wp::float64>(var_59, var_61, var_63);
+        // C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                          <L 43>
+        var_66 = wp::extract(var_42, var_65);
+        var_68 = wp::extract(var_42, var_67);
+        var_70 = wp::extract(var_42, var_69);
+        var_71 = wp::vec_t<3,wp::float64>(var_66, var_68, var_70);
+        // R = col_stack3(A - O, B - O, C - O)                                                    <L 44>
+        var_72 = wp::sub(var_57, var_50);
+        var_73 = wp::sub(var_64, var_50);
+        var_74 = wp::sub(var_71, var_50);
+        var_75 = col_stack3_1(var_72, var_73, var_74);
+        // y_force = cat_4_vec3d(                                                                 <L 45>
+        // R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                       <L 46>
+        var_77 = wp::extract(var_36, var_76);
+        var_79 = wp::extract(var_36, var_78);
+        var_81 = wp::extract(var_36, var_80);
+        var_82 = wp::vec_t<3,wp::float64>(var_77, var_79, var_81);
+        var_83 = wp::mul(var_75, var_82);
+        // R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                       <L 47>
+        var_85 = wp::extract(var_36, var_84);
+        var_87 = wp::extract(var_36, var_86);
+        var_89 = wp::extract(var_36, var_88);
+        var_90 = wp::vec_t<3,wp::float64>(var_85, var_87, var_89);
+        var_91 = wp::mul(var_75, var_90);
+        // R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                       <L 48>
+        var_93 = wp::extract(var_36, var_92);
+        var_95 = wp::extract(var_36, var_94);
+        var_97 = wp::extract(var_36, var_96);
+        var_98 = wp::vec_t<3,wp::float64>(var_93, var_95, var_97);
+        var_99 = wp::mul(var_75, var_98);
+        // R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                     <L 49>
+        var_101 = wp::extract(var_36, var_100);
+        var_103 = wp::extract(var_36, var_102);
+        var_105 = wp::extract(var_36, var_104);
+        var_106 = wp::vec_t<3,wp::float64>(var_101, var_103, var_105);
+        var_107 = wp::mul(var_75, var_106);
+        var_108 = cat_4_vec3d_0(var_83, var_91, var_99, var_107);
+        // for d in range(12):                                                                    <L 51>
+        // energy[tid] += -y_force[d] * yi[d] * scale                                             <L 52>
+        var_110 = wp::extract(var_108, var_109);
+        var_111 = wp::neg(var_110);
+        var_112 = wp::extract(var_39, var_109);
+        var_113 = wp::mul(var_111, var_112);
+        var_114 = wp::mul(var_113, var_scale);
+        // var_115 = wp::atomic_add(var_energy, var_0, var_114);
+        var_117 = wp::extract(var_108, var_116);
+        var_118 = wp::neg(var_117);
+        var_119 = wp::extract(var_39, var_116);
+        var_120 = wp::mul(var_118, var_119);
+        var_121 = wp::mul(var_120, var_scale);
+        // var_122 = wp::atomic_add(var_energy, var_0, var_121);
+        var_124 = wp::extract(var_108, var_123);
+        var_125 = wp::neg(var_124);
+        var_126 = wp::extract(var_39, var_123);
+        var_127 = wp::mul(var_125, var_126);
+        var_128 = wp::mul(var_127, var_scale);
+        // var_129 = wp::atomic_add(var_energy, var_0, var_128);
+        var_131 = wp::extract(var_108, var_130);
+        var_132 = wp::neg(var_131);
+        var_133 = wp::extract(var_39, var_130);
+        var_134 = wp::mul(var_132, var_133);
+        var_135 = wp::mul(var_134, var_scale);
+        // var_136 = wp::atomic_add(var_energy, var_0, var_135);
+        var_138 = wp::extract(var_108, var_137);
+        var_139 = wp::neg(var_138);
+        var_140 = wp::extract(var_39, var_137);
+        var_141 = wp::mul(var_139, var_140);
+        var_142 = wp::mul(var_141, var_scale);
+        // var_143 = wp::atomic_add(var_energy, var_0, var_142);
+        var_145 = wp::extract(var_108, var_144);
+        var_146 = wp::neg(var_145);
+        var_147 = wp::extract(var_39, var_144);
+        var_148 = wp::mul(var_146, var_147);
+        var_149 = wp::mul(var_148, var_scale);
+        // var_150 = wp::atomic_add(var_energy, var_0, var_149);
+        var_152 = wp::extract(var_108, var_151);
+        var_153 = wp::neg(var_152);
+        var_154 = wp::extract(var_39, var_151);
+        var_155 = wp::mul(var_153, var_154);
+        var_156 = wp::mul(var_155, var_scale);
+        // var_157 = wp::atomic_add(var_energy, var_0, var_156);
+        var_159 = wp::extract(var_108, var_158);
+        var_160 = wp::neg(var_159);
+        var_161 = wp::extract(var_39, var_158);
+        var_162 = wp::mul(var_160, var_161);
+        var_163 = wp::mul(var_162, var_scale);
+        // var_164 = wp::atomic_add(var_energy, var_0, var_163);
+        var_166 = wp::extract(var_108, var_165);
+        var_167 = wp::neg(var_166);
+        var_168 = wp::extract(var_39, var_165);
+        var_169 = wp::mul(var_167, var_168);
+        var_170 = wp::mul(var_169, var_scale);
+        // var_171 = wp::atomic_add(var_energy, var_0, var_170);
+        var_173 = wp::extract(var_108, var_172);
+        var_174 = wp::neg(var_173);
+        var_175 = wp::extract(var_39, var_172);
+        var_176 = wp::mul(var_174, var_175);
+        var_177 = wp::mul(var_176, var_scale);
+        // var_178 = wp::atomic_add(var_energy, var_0, var_177);
+        var_180 = wp::extract(var_108, var_179);
+        var_181 = wp::neg(var_180);
+        var_182 = wp::extract(var_39, var_179);
+        var_183 = wp::mul(var_181, var_182);
+        var_184 = wp::mul(var_183, var_scale);
+        // var_185 = wp::atomic_add(var_energy, var_0, var_184);
+        var_187 = wp::extract(var_108, var_186);
+        var_188 = wp::neg(var_187);
+        var_189 = wp::extract(var_39, var_186);
+        var_190 = wp::mul(var_188, var_189);
+        var_191 = wp::mul(var_190, var_scale);
+        // var_192 = wp::atomic_add(var_energy, var_0, var_191);
+        //---------
+        // reverse
+        wp::adj_atomic_add(var_energy, var_0, var_191, adj_energy, adj_0, adj_191, adj_192);
+        wp::adj_mul(var_190, var_scale, adj_190, adj_scale, adj_191);
+        wp::adj_mul(var_188, var_189, adj_188, adj_189, adj_190);
+        wp::adj_extract(var_39, var_186, adj_39, adj_186, adj_189);
+        wp::adj_neg(var_187, adj_187, adj_188);
+        wp::adj_extract(var_108, var_186, adj_108, adj_186, adj_187);
+        wp::adj_atomic_add(var_energy, var_0, var_184, adj_energy, adj_0, adj_184, adj_185);
+        wp::adj_mul(var_183, var_scale, adj_183, adj_scale, adj_184);
+        wp::adj_mul(var_181, var_182, adj_181, adj_182, adj_183);
+        wp::adj_extract(var_39, var_179, adj_39, adj_179, adj_182);
+        wp::adj_neg(var_180, adj_180, adj_181);
+        wp::adj_extract(var_108, var_179, adj_108, adj_179, adj_180);
+        wp::adj_atomic_add(var_energy, var_0, var_177, adj_energy, adj_0, adj_177, adj_178);
+        wp::adj_mul(var_176, var_scale, adj_176, adj_scale, adj_177);
+        wp::adj_mul(var_174, var_175, adj_174, adj_175, adj_176);
+        wp::adj_extract(var_39, var_172, adj_39, adj_172, adj_175);
+        wp::adj_neg(var_173, adj_173, adj_174);
+        wp::adj_extract(var_108, var_172, adj_108, adj_172, adj_173);
+        wp::adj_atomic_add(var_energy, var_0, var_170, adj_energy, adj_0, adj_170, adj_171);
+        wp::adj_mul(var_169, var_scale, adj_169, adj_scale, adj_170);
+        wp::adj_mul(var_167, var_168, adj_167, adj_168, adj_169);
+        wp::adj_extract(var_39, var_165, adj_39, adj_165, adj_168);
+        wp::adj_neg(var_166, adj_166, adj_167);
+        wp::adj_extract(var_108, var_165, adj_108, adj_165, adj_166);
+        wp::adj_atomic_add(var_energy, var_0, var_163, adj_energy, adj_0, adj_163, adj_164);
+        wp::adj_mul(var_162, var_scale, adj_162, adj_scale, adj_163);
+        wp::adj_mul(var_160, var_161, adj_160, adj_161, adj_162);
+        wp::adj_extract(var_39, var_158, adj_39, adj_158, adj_161);
+        wp::adj_neg(var_159, adj_159, adj_160);
+        wp::adj_extract(var_108, var_158, adj_108, adj_158, adj_159);
+        wp::adj_atomic_add(var_energy, var_0, var_156, adj_energy, adj_0, adj_156, adj_157);
+        wp::adj_mul(var_155, var_scale, adj_155, adj_scale, adj_156);
+        wp::adj_mul(var_153, var_154, adj_153, adj_154, adj_155);
+        wp::adj_extract(var_39, var_151, adj_39, adj_151, adj_154);
+        wp::adj_neg(var_152, adj_152, adj_153);
+        wp::adj_extract(var_108, var_151, adj_108, adj_151, adj_152);
+        wp::adj_atomic_add(var_energy, var_0, var_149, adj_energy, adj_0, adj_149, adj_150);
+        wp::adj_mul(var_148, var_scale, adj_148, adj_scale, adj_149);
+        wp::adj_mul(var_146, var_147, adj_146, adj_147, adj_148);
+        wp::adj_extract(var_39, var_144, adj_39, adj_144, adj_147);
+        wp::adj_neg(var_145, adj_145, adj_146);
+        wp::adj_extract(var_108, var_144, adj_108, adj_144, adj_145);
+        wp::adj_atomic_add(var_energy, var_0, var_142, adj_energy, adj_0, adj_142, adj_143);
+        wp::adj_mul(var_141, var_scale, adj_141, adj_scale, adj_142);
+        wp::adj_mul(var_139, var_140, adj_139, adj_140, adj_141);
+        wp::adj_extract(var_39, var_137, adj_39, adj_137, adj_140);
+        wp::adj_neg(var_138, adj_138, adj_139);
+        wp::adj_extract(var_108, var_137, adj_108, adj_137, adj_138);
+        wp::adj_atomic_add(var_energy, var_0, var_135, adj_energy, adj_0, adj_135, adj_136);
+        wp::adj_mul(var_134, var_scale, adj_134, adj_scale, adj_135);
+        wp::adj_mul(var_132, var_133, adj_132, adj_133, adj_134);
+        wp::adj_extract(var_39, var_130, adj_39, adj_130, adj_133);
+        wp::adj_neg(var_131, adj_131, adj_132);
+        wp::adj_extract(var_108, var_130, adj_108, adj_130, adj_131);
+        wp::adj_atomic_add(var_energy, var_0, var_128, adj_energy, adj_0, adj_128, adj_129);
+        wp::adj_mul(var_127, var_scale, adj_127, adj_scale, adj_128);
+        wp::adj_mul(var_125, var_126, adj_125, adj_126, adj_127);
+        wp::adj_extract(var_39, var_123, adj_39, adj_123, adj_126);
+        wp::adj_neg(var_124, adj_124, adj_125);
+        wp::adj_extract(var_108, var_123, adj_108, adj_123, adj_124);
+        wp::adj_atomic_add(var_energy, var_0, var_121, adj_energy, adj_0, adj_121, adj_122);
+        wp::adj_mul(var_120, var_scale, adj_120, adj_scale, adj_121);
+        wp::adj_mul(var_118, var_119, adj_118, adj_119, adj_120);
+        wp::adj_extract(var_39, var_116, adj_39, adj_116, adj_119);
+        wp::adj_neg(var_117, adj_117, adj_118);
+        wp::adj_extract(var_108, var_116, adj_108, adj_116, adj_117);
+        wp::adj_atomic_add(var_energy, var_0, var_114, adj_energy, adj_0, adj_114, adj_115);
+        wp::adj_mul(var_113, var_scale, adj_113, adj_scale, adj_114);
+        wp::adj_mul(var_111, var_112, adj_111, adj_112, adj_113);
+        wp::adj_extract(var_39, var_109, adj_39, adj_109, adj_112);
+        wp::adj_neg(var_110, adj_110, adj_111);
+        wp::adj_extract(var_108, var_109, adj_108, adj_109, adj_110);
+        // adj: energy[tid] += -y_force[d] * yi[d] * scale                                        <L 52>
+        // adj: for d in range(12):                                                               <L 51>
+        adj_cat_4_vec3d_0(var_83, var_91, var_99, var_107, adj_83, adj_91, adj_99, adj_107, adj_108);
+        wp::adj_mul(var_75, var_106, adj_75, adj_106, adj_107);
+        wp::adj_vec_t(var_101, var_103, var_105, adj_101, adj_103, adj_105, adj_106);
+        wp::adj_extract(var_36, var_104, adj_36, adj_104, adj_105);
+        wp::adj_extract(var_36, var_102, adj_36, adj_102, adj_103);
+        wp::adj_extract(var_36, var_100, adj_36, adj_100, adj_101);
+        // adj: R * wp.vec3d(rest_y_force[9], rest_y_force[10], rest_y_force[11]),                <L 49>
+        wp::adj_mul(var_75, var_98, adj_75, adj_98, adj_99);
+        wp::adj_vec_t(var_93, var_95, var_97, adj_93, adj_95, adj_97, adj_98);
+        wp::adj_extract(var_36, var_96, adj_36, adj_96, adj_97);
+        wp::adj_extract(var_36, var_94, adj_36, adj_94, adj_95);
+        wp::adj_extract(var_36, var_92, adj_36, adj_92, adj_93);
+        // adj: R * wp.vec3d(rest_y_force[6], rest_y_force[7], rest_y_force[8]),                  <L 48>
+        wp::adj_mul(var_75, var_90, adj_75, adj_90, adj_91);
+        wp::adj_vec_t(var_85, var_87, var_89, adj_85, adj_87, adj_89, adj_90);
+        wp::adj_extract(var_36, var_88, adj_36, adj_88, adj_89);
+        wp::adj_extract(var_36, var_86, adj_36, adj_86, adj_87);
+        wp::adj_extract(var_36, var_84, adj_36, adj_84, adj_85);
+        // adj: R * wp.vec3d(rest_y_force[3], rest_y_force[4], rest_y_force[5]),                  <L 47>
+        wp::adj_mul(var_75, var_82, adj_75, adj_82, adj_83);
+        wp::adj_vec_t(var_77, var_79, var_81, adj_77, adj_79, adj_81, adj_82);
+        wp::adj_extract(var_36, var_80, adj_36, adj_80, adj_81);
+        wp::adj_extract(var_36, var_78, adj_36, adj_78, adj_79);
+        wp::adj_extract(var_36, var_76, adj_36, adj_76, adj_77);
+        // adj: R * wp.vec3d(rest_y_force[0], rest_y_force[1], rest_y_force[2]),                  <L 46>
+        // adj: y_force = cat_4_vec3d(                                                            <L 45>
+        adj_col_stack3_1(var_72, var_73, var_74, adj_72, adj_73, adj_74, adj_75);
+        wp::adj_sub(var_71, var_50, adj_71, adj_50, adj_74);
+        wp::adj_sub(var_64, var_50, adj_64, adj_50, adj_73);
+        wp::adj_sub(var_57, var_50, adj_57, adj_50, adj_72);
+        // adj: R = col_stack3(A - O, B - O, C - O)                                               <L 44>
+        wp::adj_vec_t(var_66, var_68, var_70, adj_66, adj_68, adj_70, adj_71);
+        wp::adj_extract(var_42, var_69, adj_42, adj_69, adj_70);
+        wp::adj_extract(var_42, var_67, adj_42, adj_67, adj_68);
+        wp::adj_extract(var_42, var_65, adj_42, adj_65, adj_66);
+        // adj: C = wp.vec3d(hat_yi[6], hat_yi[7], hat_yi[8])                                     <L 43>
+        wp::adj_vec_t(var_59, var_61, var_63, adj_59, adj_61, adj_63, adj_64);
+        wp::adj_extract(var_42, var_62, adj_42, adj_62, adj_63);
+        wp::adj_extract(var_42, var_60, adj_42, adj_60, adj_61);
+        wp::adj_extract(var_42, var_58, adj_42, adj_58, adj_59);
+        // adj: B = wp.vec3d(hat_yi[3], hat_yi[4], hat_yi[5])                                     <L 42>
+        wp::adj_vec_t(var_52, var_54, var_56, adj_52, adj_54, adj_56, adj_57);
+        wp::adj_extract(var_42, var_55, adj_42, adj_55, adj_56);
+        wp::adj_extract(var_42, var_53, adj_42, adj_53, adj_54);
+        wp::adj_extract(var_42, var_51, adj_42, adj_51, adj_52);
+        // adj: A = wp.vec3d(hat_yi[0], hat_yi[1], hat_yi[2])                                     <L 41>
+        wp::adj_vec_t(var_45, var_47, var_49, adj_45, adj_47, adj_49, adj_50);
+        wp::adj_extract(var_42, var_48, adj_42, adj_48, adj_49);
+        wp::adj_extract(var_42, var_46, adj_42, adj_46, adj_47);
+        wp::adj_extract(var_42, var_44, adj_42, adj_44, adj_45);
+        // adj: O = wp.vec3d(hat_yi[9], hat_yi[10], hat_yi[11])                                   <L 40>
+        wp::adj_copy(var_43, adj_41, adj_42);
+        wp::adj_load(var_41, adj_41, adj_43);
+        wp::adj_address(var_hat_y, var_0, adj_hat_y, adj_0, adj_41);
+        // adj: hat_yi = hat_y[tid]                                                               <L 39>
+        wp::adj_copy(var_40, adj_38, adj_39);
+        wp::adj_load(var_38, adj_38, adj_40);
+        wp::adj_address(var_y, var_0, adj_y, adj_0, adj_38);
+        // adj: yi = y[tid]                                                                       <L 38>
+        wp::adj_copy(var_37, adj_35, adj_36);
+        wp::adj_load(var_35, adj_35, adj_37);
+        wp::adj_address(var_affine_ext_y_force, var_0, adj_affine_ext_y_force, adj_0, adj_35);
+        // adj: rest_y_force = affine_ext_y_force[tid]                                            <L 37>
+        var_14 = wp::iter_reverse(var_14);
+        start_for_1:;
+            if (iter_cmp(var_14) == 0) goto end_for_1;
+            var_15 = wp::iter_next(var_14);
+        	adj_16 = {};
+        	adj_17 = {};
+        	adj_18 = {};
+            // for j in range(dim + 1):                                                           <L 35>
+            var_17 = wp::add(var_4, var_16);
+            var_18 = wp::range(var_17);
+            var_18 = wp::iter_reverse(var_18);
+            start_for_3:;
+                if (iter_cmp(var_18) == 0) goto end_for_3;
+                var_19 = wp::iter_next(var_18);
+            	adj_20 = {};
+            	adj_21 = {};
+            	adj_22 = {};
+            	adj_23 = {};
+            	adj_24 = {};
+            	adj_25 = {};
+            	adj_26 = {};
+            	adj_27 = {};
+            	adj_28 = {};
+            	adj_29 = {};
+            	adj_30 = {};
+            	adj_31 = {};
+            	adj_32 = {};
+            	adj_33 = {};
+            	adj_34 = {};
+                // energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale       <L 36>
+                var_20 = wp::mod(var_15, var_4);
+                var_21 = wp::extract(var_gravity, var_20);
+                var_22 = wp::mod(var_15, var_4);
+                var_23 = wp::extract(var_12, var_22);
+                var_24 = wp::add(var_21, var_23);
+                var_25 = wp::neg(var_24);
+                var_26 = wp::address(var_y, var_0);
+                var_28 = wp::load(var_26);
+                var_27 = wp::extract(var_28, var_15);
+                var_29 = wp::mul(var_25, var_27);
+                var_30 = wp::div(var_15, var_4);
+                var_31 = wp::extract(var_9, var_30, var_19);
+                var_32 = wp::mul(var_29, var_31);
+                var_33 = wp::mul(var_32, var_scale);
+                // var_34 = wp::atomic_add(var_energy, var_0, var_33);
+                wp::adj_atomic_add(var_energy, var_0, var_33, adj_energy, adj_0, adj_33, adj_34);
+                wp::adj_mul(var_32, var_scale, adj_32, adj_scale, adj_33);
+                wp::adj_mul(var_29, var_31, adj_29, adj_31, adj_32);
+                wp::adj_extract(var_9, var_30, var_19, adj_9, adj_30, adj_19, adj_31);
+                wp::adj_div(var_15, var_4, var_30, adj_15, adj_4, adj_30);
+                wp::adj_mul(var_25, var_27, adj_25, adj_27, adj_29);
+                wp::adj_extract(var_28, var_15, adj_26, adj_15, adj_27);
+                wp::adj_load(var_26, adj_26, adj_28);
+                wp::adj_address(var_y, var_0, adj_y, adj_0, adj_26);
+                wp::adj_neg(var_24, adj_24, adj_25);
+                wp::adj_add(var_21, var_23, adj_21, adj_23, adj_24);
+                wp::adj_extract(var_12, var_22, adj_12, adj_22, adj_23);
+                wp::adj_mod(var_15, var_4, adj_15, adj_4, adj_22);
+                wp::adj_extract(var_gravity, var_20, adj_gravity, adj_20, adj_21);
+                wp::adj_mod(var_15, var_4, adj_15, adj_4, adj_20);
+                // adj: energy[tid] += -(gravity[i % dim] + ext_force[i % dim]) * y[tid][i] * mass[(i / dim), j] * scale  <L 36>
+            	goto start_for_3;
+            end_for_3:;
+            wp::adj_range(var_17, adj_17, adj_18);
+            wp::adj_add(var_4, var_16, adj_4, adj_16, adj_17);
+            // adj: for j in range(dim + 1):                                                      <L 35>
+        	goto start_for_1;
+        end_for_1:;
+        wp::adj_range(var_7, adj_7, adj_14);
+        // adj: for i in range(n_dof):                                                            <L 34>
+        wp::adj_copy(var_13, adj_11, adj_12);
+        wp::adj_load(var_11, adj_11, adj_13);
+        wp::adj_address(var_affine_ext_force, var_0, adj_affine_ext_force, adj_0, adj_11);
+        // adj: ext_force = affine_ext_force[tid]                                                 <L 33>
+        wp::adj_copy(var_10, adj_8, adj_9);
+        wp::adj_load(var_8, adj_8, adj_10);
+        wp::adj_address(var_mass_matrix, var_0, adj_mass_matrix, adj_0, adj_8);
+        // adj: mass = mass_matrix[tid]                                                           <L 32>
+        wp::adj_mul(var_6, var_4, adj_6, adj_4, adj_7);
+        wp::adj_add(var_4, var_5, adj_4, adj_5, adj_6);
+        // adj: n_dof = (dim + 1) * dim                                                           <L 31>
+        // adj: dim = 3                                                                           <L 30>
+        if (var_3) {
+        wp::adj_load(var_1, adj_1, adj_3);
+            label0:;
+            // adj: return                                                                        <L 29>
+        }
+        wp::adj_load(var_1, adj_1, adj_2);
+        wp::adj_address(var_affine_has_constraint, var_0, adj_affine_has_constraint, adj_0, adj_1);
+        // adj: if affine_has_constraint[tid]:                                                    <L 28>
+        // adj: tid = wp.tid()                                                                    <L 27>
+        // adj: def compute_body_force_energy_val_affine(                                         <L 16>
         continue;
     }
 }

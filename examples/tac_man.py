@@ -97,6 +97,7 @@ def run():
     parser.add_argument("--joint_type", default="revolute", type=str)
     parser.add_argument("--seed", default=0, type=int)
     parser.add_argument("--headless", action="store_true")
+    parser.add_argument("--debug", action="store_true")
     args = parser.parse_args()
 
     # DEBUG
@@ -242,6 +243,8 @@ def run():
 
         if t == 0:
             canon_markers_local = model.tac_markers_local[0].cpu().numpy()
+    
+    if args.debug: exit(0)
 
     # Track activated markers
     grasp_markers_local = model.tac_markers_local[0].cpu().numpy()
@@ -332,13 +335,13 @@ def run():
             o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(grasp_markers_world[tracking_marker_idx])),
         )
 
-        all_rgbs, all_depths, all_normals = model.render_tactile(True, True)
-        viz_rgb = all_rgbs[viz_env].reshape([800, 400, 3])
-        text = f"Env {viz_env} | {model.frame} ({curr_state.name}) | Diff: {tracked_marker_diff * 1000:.2f} mm | Joint: {joint_state:.4f}"
-        viz_rgb = cv2.putText(viz_rgb, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
-        if not args.headless:
-            cv2.imshow("TacMan - RGB", viz_rgb[..., [2, 1, 0]])
-            cv2.waitKey(1)
+        # all_rgbs, all_depths, all_normals = model.render_tactile(True, True)
+        # viz_rgb = all_rgbs[viz_env].reshape([800, 400, 3])
+        # text = f"Env {viz_env} | {model.frame} ({curr_state.name}) | Diff: {tracked_marker_diff * 1000:.2f} mm | Joint: {joint_state:.4f}"
+        # viz_rgb = cv2.putText(viz_rgb, text, (10, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.3, (0, 0, 255), 1)
+        # if not args.headless:
+        #     cv2.imshow("TacMan - RGB", viz_rgb[..., [2, 1, 0]])
+        #     cv2.waitKey(1)
 
         log.info(f"Current state: {curr_state.name} | Tracking {len(tracking_marker_idx)} markers")
         log.info(f"Max marker diff: {tracked_marker_diff * 1000} mm")
