@@ -18,9 +18,9 @@ cythonize_list = [
 
 ptx_arch_list = [
     "86",
-    # "80",
-    # "75",
-    # "61",
+    "80",
+    "75",
+    "61",
 ]
 
 precompile_commands = [
